@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppm.mapper.BulletSendRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ppm.entity.BulletSendRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="wx_member_id" jdbcType="INTEGER" property="wxMemberId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, wx_member_id, content, activity_id, status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bullet_send_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findBulletList" parameterType="com.ppm.entity.BulletSendRecord" resultMap="BaseResultMap">
+    select
+    a.content,
+    b.head_img,
+    b.nick_name
+    from bullet_send_record a left join
+    wx_member b on a.wx_member_id = b.id
+    where a.activity_id  = #{activityId} and a.status = #{status}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bullet_send_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ppm.entity.BulletSendRecord">
+    insert into bullet_send_record (id, wx_member_id, content, 
+      activity_id, `status`, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{wxMemberId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{activityId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppm.entity.BulletSendRecord">
+    insert into bullet_send_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="wxMemberId != null">
+        wx_member_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wxMemberId != null">
+        #{wxMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppm.entity.BulletSendRecord">
+    update bullet_send_record
+    <set>
+      <if test="wxMemberId != null">
+        wx_member_id = #{wxMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppm.entity.BulletSendRecord">
+    update bullet_send_record
+    set wx_member_id = #{wxMemberId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
