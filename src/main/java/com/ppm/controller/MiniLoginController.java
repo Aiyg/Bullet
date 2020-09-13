@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.ppm.constants.Constant;
 import com.ppm.entity.*;
 import com.ppm.exception.code.BaseResponseCode;
+import com.ppm.mapper.ActivityMapper;
+import com.ppm.mapper.BulletMapper;
 import com.ppm.mapper.BulletSendRecordMapper;
 import com.ppm.mapper.WxMemberMapper;
 import com.ppm.service.RedisService;
@@ -46,7 +48,11 @@ public class MiniLoginController  {
     @Autowired
     private RedisService redisService;
     @Autowired
+    private BulletMapper bulletMapper;
+    @Autowired
     private BulletSendRecordMapper bulletSendRecordMapper;
+    @Autowired
+    private ActivityMapper activityMapper;
 
     /**
      * 小程序登陆
@@ -116,11 +122,27 @@ public class MiniLoginController  {
     }
 
     /**
-     * 弹幕发送
+     * 弹幕清单
      */
     @RequestMapping(value={"/bullet"})
     @ResponseBody
-    public DataResult bullet(String openid,Integer activityId,String content, HttpServletRequest request) throws IOException {
+    public DataResult bullet(Integer activityId, HttpServletRequest request) throws IOException {
+        try{
+            Activity activity = activityMapper.selectByPrimaryKey(activityId);
+            List<Bullet> list = bulletMapper.findBullet(activity.getUserId());
+            return DataResult.success(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);
+        }
+    }
+
+    /**
+     * 弹幕发送
+     */
+    @RequestMapping(value={"/sendBullet"})
+    @ResponseBody
+    public DataResult sendBullet(String openid,Integer activityId,String content, HttpServletRequest request) throws IOException {
         try{
             WxMember wxMember = wxMemberMapper.findOne(openid);
             BulletSendRecord record = new BulletSendRecord();
@@ -138,7 +160,7 @@ public class MiniLoginController  {
     }
 
     /**
-     * 弹幕发送
+     * 弹幕列表
      */
     @RequestMapping(value={"/bulletList"})
     @ResponseBody

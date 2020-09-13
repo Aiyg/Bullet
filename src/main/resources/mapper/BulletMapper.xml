@@ -17,14 +17,22 @@
     from bullet
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="findBullet" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bullet
+    where type=1 and user_id=#{userId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from bullet
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Bullet">
-    insert into bullet (id, title, `type`, 
+    insert into bullet (title, `type`,
       create_time, is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+    values (#{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ppm.entity.Bullet">

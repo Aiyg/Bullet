@@ -24,10 +24,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Activity">
-    insert into activity (id, `type`, title, 
+    insert into activity (type, title,
       user_id, create_time, update_time, 
       is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+    values (#{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=VARCHAR})
   </insert>

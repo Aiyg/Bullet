@@ -30,10 +30,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Advert">
-    insert into advert (id, file_url, `type`, 
+    insert into advert (file_url, `type`,
       user_id, create_time, update_time, 
       is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+    values (#{fileUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
       #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=VARCHAR})
   </insert>

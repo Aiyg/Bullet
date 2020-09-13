@@ -23,6 +23,7 @@
 
   <select id="findBulletList" parameterType="com.ppm.entity.BulletSendRecord" resultMap="BaseResultMap">
     select
+    a.id,
     a.content,
     b.head_img,
     b.nick_name
@@ -36,10 +37,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.BulletSendRecord">
-    insert into bullet_send_record (id, wx_member_id, content, 
+    insert into bullet_send_record (wx_member_id, content,
       activity_id, `status`, create_time
       )
-    values (#{id,jdbcType=INTEGER}, #{wxMemberId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+    values (#{wxMemberId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
       #{activityId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
