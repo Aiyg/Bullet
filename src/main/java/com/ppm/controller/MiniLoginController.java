@@ -86,6 +86,7 @@ public class MiniLoginController  {
                     wxMemberMapper.insert(wxMember);
                 }
 
+
                 List<WxMember> list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+sex);
                 list.add(wxMember);
                 redisService.setList(Constant.ONLINE_WX_MEMBER+activityId+sex,list,2, TimeUnit.HOURS);
@@ -185,5 +186,7 @@ public class MiniLoginController  {
             return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);
         }
     }
+
+
 
 }

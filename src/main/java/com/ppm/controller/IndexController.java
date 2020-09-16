@@ -31,6 +31,11 @@ public class IndexController {
 
         return "login";
     }
+    @GetMapping("/web")
+    public String web(){
+
+        return "web";
+    }
     /**
      * 进入首页
      * @Author:      changguangqi
