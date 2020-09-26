@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<script src="/layui/layui.all.js"></script>
 <head>
     <meta charset="UTF-8"></meta>
     <title>Title</title>
 </head>
 <body>
 hello world!
+<div id="word">
+
+</div>
 
 </body>
 <script>
+    var $ = jQuery = layui.jquery;
     var socket;
     if(typeof(WebSocket) == "undefined") {
         console.log("您的浏览器不支持WebSocket");
@@ -16,7 +22,7 @@ hello world!
         console.log("您的浏览器支持WebSocket");
         //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
         //等同于
-        index = new WebSocket("ws://localhost:8080/websocket/1");
+        index = new WebSocket("ws://localhost/websocket/1");
         //socket = new WebSocket("${basePath}websocket/${cid}".replace("http","ws"));
         //打开事件
         index.onopen = function() {
@@ -25,6 +31,8 @@ hello world!
         };
         //获得消息事件
         index.onmessage = function(msg) {
+            var word = '<p>'+msg.data+'</p>';
+            $('#word').append(word);
             console.log(msg.data);
             //发现消息进入    开始处理前端触发逻辑
         };

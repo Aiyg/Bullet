@@ -17,16 +17,53 @@
     from wx_friend
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--聊天列表-->
+  <select id="chatList" resultType="com.ppm.entity.WxFriend">
+    SELECT
+        a.wx_member_friend_id wxMemberFriendId,
+        a.content,
+        b.nick_name nickName,
+        b.head_img headImg
+    FROM
+        wx_friend a,
+        wx_member b
+    WHERE
+        a.wx_member_friend_id = b.id
+    AND wx_member_id = #{wxMemberId} and wx_member_friend_id = #{wxMemberFriendId}
+    ORDER BY a.create_time desc limit 20
+  </select>
+
+  <!--好友列表-->
+  <select id="friendList" resultType="com.ppm.entity.WxFriend">
+    select
+    a.wx_member_friend_id wxMemberFriendId,
+    (select content from wx_friend where wx_member_id=a.wx_member_id
+    and wx_member_friend_id = a.wx_member_friend_id ORDER BY create_time desc limit 1 ) content,
+    (select create_time from wx_friend where wx_member_id=a.wx_member_id
+    and wx_member_friend_id = a.wx_member_friend_id ORDER BY create_time desc limit 1 ) createTime,
+    b.nick_name nickName,
+    b.head_img headImg
+    from (
+    select wx_member_id,wx_member_friend_id from wx_friend where wx_member_id = #{wxMemberId}
+    group by wx_member_id,wx_member_friend_id limit 20) a,wx_member b
+    WHERE
+        a.wx_member_friend_id = b.id
+    AND a.wx_member_id = #{wxMemberId} ORDER BY createTime desc
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from wx_friend
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.WxFriend">
-    insert into wx_friend (id, wx_member_id, wx_member_friend_id, 
+    insert into wx_friend (wx_member_id, wx_member_friend_id,
       content, create_time)
-    values (#{id,jdbcType=INTEGER}, #{wxMemberId,jdbcType=INTEGER}, #{wxMemberFriendId,jdbcType=INTEGER}, 
+    values (#{wxMemberId,jdbcType=INTEGER}, #{wxMemberFriendId,jdbcType=INTEGER},
       #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
+
+
   <insert id="insertSelective" parameterType="com.ppm.entity.WxFriend">
     insert into wx_friend
     <trim prefix="(" suffix=")" suffixOverrides=",">

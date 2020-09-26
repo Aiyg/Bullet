@@ -14,7 +14,27 @@ public class WxFriend implements Serializable {
 
     private Date createTime;
 
+    private String nickName;
+
+    private String headImg;
+
     private static final long serialVersionUID = 1L;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public Integer getId() {
         return id;

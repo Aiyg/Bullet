@@ -1,7 +1,10 @@
 package com.ppm.controller.api;
 
 import com.ppm.constants.Constant;
+import com.ppm.entity.WxFriend;
 import com.ppm.entity.WxMember;
+import com.ppm.mapper.WxFriendMapper;
+import com.ppm.mapper.WxMemberMapper;
 import com.ppm.service.HomeService;
 import com.ppm.utils.DataResult;
 import com.ppm.utils.JwtTokenUtil;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,10 @@ import java.util.Map;
 public class RestApiController {
     @Autowired
     private HomeService homeService;
+    @Autowired
+    private WxFriendMapper wxFriendMapper;
+    @Autowired
+    private WxMemberMapper wxMemberMapper;
 
     @GetMapping("/test")
     @ApiOperation(value ="获取首页数据接口")
@@ -72,9 +80,17 @@ public class RestApiController {
     //推送数据接口
     @ResponseBody
     @RequestMapping("/socket/push/{cid}")
-    public Map pushToWeb(@PathVariable String cid, String message) {
+    public Map pushToWeb(@PathVariable String cid,String openid, String message) {
         Map result = new HashMap();
         try {
+            WxMember sendMem = wxMemberMapper.findOne(openid);
+            WxFriend wxFriend = new WxFriend();
+            wxFriend.setContent(message);
+            wxFriend.setCreateTime(new Date());
+            wxFriend.setWxMemberId(sendMem.getId());
+            wxFriend.setWxMemberFriendId(Integer.parseInt(cid));
+            wxFriendMapper.insert(wxFriend);
+
             WebSocketServer.sendInfo(message,cid);
             result.put("code", 200);
             result.put("msg", "success");

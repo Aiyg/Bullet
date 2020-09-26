@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ppm.constants.Constant;
 import com.ppm.entity.*;
 import com.ppm.exception.code.BaseResponseCode;
-import com.ppm.mapper.ActivityMapper;
-import com.ppm.mapper.BulletMapper;
-import com.ppm.mapper.BulletSendRecordMapper;
-import com.ppm.mapper.WxMemberMapper;
+import com.ppm.mapper.*;
 import com.ppm.service.RedisService;
 import com.ppm.utils.DataResult;
 import com.ppm.utils.HttpTools;
@@ -41,8 +38,8 @@ import java.util.concurrent.TimeUnit;
 public class MiniLoginController  {
     private final Log log = LogFactory.getLog(getClass());
 
-    final private String appid = "wx63f0dc793722288f";
-    final private String secret = "e33ed24be90b644bc34ce82348ad2e6c";
+    final private String appid = "wxa3234f15461aface";
+    final private String secret = "243d9b2852cda6e3a812846a7cae249f";
     @Autowired
     private WxMemberMapper wxMemberMapper;
     @Autowired
@@ -53,6 +50,9 @@ public class MiniLoginController  {
     private BulletSendRecordMapper bulletSendRecordMapper;
     @Autowired
     private ActivityMapper activityMapper;
+
+    @Autowired
+    private WxFriendMapper wxFriendMapper;
 
     /**
      * 小程序登陆
@@ -185,6 +185,36 @@ public class MiniLoginController  {
             e.printStackTrace();
             return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);
         }
+    }
+
+
+    /**
+     * 好友列表
+     */
+    @RequestMapping(value={"/friendList"})
+    @ResponseBody
+    public DataResult friendList(String openid, HttpServletRequest request) throws IOException {
+        WxMember wxMember = wxMemberMapper.findOne(openid);
+        WxFriend record = new WxFriend();
+        record.setWxMemberId(wxMember.getId());
+        List<WxFriend> list = wxFriendMapper.friendList(record);
+
+        return DataResult.success(list);
+    }
+
+    /**
+     * 聊天列表
+     */
+    @RequestMapping(value={"/chatList"})
+    @ResponseBody
+    public DataResult chatList(String openid,Integer wxMemberFriendId, HttpServletRequest request) throws IOException {
+        WxMember wxMember = wxMemberMapper.findOne(openid);
+        WxFriend record = new WxFriend();
+        record.setWxMemberId(wxMember.getId());
+        record.setWxMemberFriendId(wxMemberFriendId);
+        List<WxFriend> list = wxFriendMapper.chatList(record);
+
+        return DataResult.success(list);
     }
 
 
