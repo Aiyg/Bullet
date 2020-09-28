@@ -115,6 +115,7 @@ public class MiniLoginController  {
             }else{
                 list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
             }
+            Collections.shuffle(list);
             return DataResult.success(list);
         }catch (Exception e){
             e.printStackTrace();
@@ -171,7 +172,6 @@ public class MiniLoginController  {
             BulletSendRecord record = new BulletSendRecord();
             record.setActivityId(activityId);
             record.setStatus("0");
-            record.setWxMemberId(wxMember.getId());
             List<BulletSendRecord> list = bulletSendRecordMapper.findBulletList(record);
 
             for(BulletSendRecord re:list){
