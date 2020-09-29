@@ -10,10 +10,7 @@ import com.ppm.exception.code.BaseResponseCode;
 import com.ppm.mapper.SysDeptMapper;
 import com.ppm.mapper.SysUserMapper;
 import com.ppm.service.*;
-import com.ppm.utils.JwtTokenUtil;
-import com.ppm.utils.PageUtils;
-import com.ppm.utils.PasswordUtils;
-import com.ppm.utils.TokenSettings;
+import com.ppm.utils.*;
 import com.ppm.vo.req.*;
 import com.ppm.vo.resp.LoginRespVO;
 import com.ppm.vo.resp.PageVO;
@@ -63,8 +60,24 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(vo,sysUser);
         sysUser.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
-        sysUser.setPassword(encode);
+        sysUser.setPassword(vo.getPassword());
         sysUser.setId(UUID.randomUUID().toString());
+        sysUser.setCreateTime(new Date());
+        int i = sysUserMapper.insertSelective(sysUser);
+        if (i!=1){
+            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
+        }
+        return sysUser.getId();
+    }
+
+    @Override
+    public String userRegister(RegisterReqVO vo) {
+        SysUser sysUser=new SysUser();
+        BeanUtils.copyProperties(vo,sysUser);
+        sysUser.setPassword(vo.getPassword());
+        sysUser.setId(UUID.randomUUID().toString());
+        sysUser.setDeleted(1);
+        sysUser.setStatus(1);
         sysUser.setCreateTime(new Date());
         int i = sysUserMapper.insertSelective(sysUser);
         if (i!=1){
@@ -100,6 +113,26 @@ public class UserServiceImpl implements UserService {
         }
         respVO.setAccessToken(access_token);
         respVO.setRefreshToken(refresh_token);
+        return respVO;
+    }
+
+    @Override
+    public LoginRespVO userLogin(LoginReqVO vo) {
+        SysUser sysUser=sysUserMapper.getUserInfoByName(vo.getUsername());
+        if (null==sysUser){
+            throw new BusinessException(BaseResponseCode.NOT_ACCOUNT);
+        }
+        if (sysUser.getStatus()==2){
+            throw new BusinessException(BaseResponseCode.USER_LOCK);
+        }
+        if(!vo.getPassword().equals(sysUser.getPassword())){
+            throw new BusinessException(BaseResponseCode.PASSWORD_ERROR);
+        }
+        LoginRespVO respVO=new LoginRespVO();
+        BeanUtils.copyProperties(sysUser,respVO);
+        String access_token= StringTools.getUUID();
+        redisService.set(access_token,sysUser.getId(),1,TimeUnit.HOURS);
+        respVO.setAccessToken(access_token);
         return respVO;
     }
 

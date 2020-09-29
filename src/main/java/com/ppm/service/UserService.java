@@ -21,8 +21,11 @@ public interface UserService {
 
     String register(RegisterReqVO vo);
 
+    String userRegister(RegisterReqVO vo);
+
     LoginRespVO login(LoginReqVO vo);
 
+    LoginRespVO userLogin(LoginReqVO vo);
 
     String refreshToken(String refreshToken, String accessToken);
 
