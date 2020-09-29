@@ -9,10 +9,11 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, wx_member_id, content, activity_id, status, create_time
+    id, wx_member_id, content, activity_id,type, status, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -24,6 +25,7 @@
   <select id="findBulletList" parameterType="com.ppm.entity.BulletSendRecord" resultMap="BaseResultMap">
     select
     a.id,
+    a.type,
     a.content,
     b.head_img,
     b.nick_name
@@ -38,10 +40,10 @@
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.BulletSendRecord">
     insert into bullet_send_record (wx_member_id, content,
-      activity_id, `status`, create_time
+      activity_id,type, status, create_time
       )
     values (#{wxMemberId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
-      #{activityId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{activityId,jdbcType=INTEGER},#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ppm.entity.BulletSendRecord">

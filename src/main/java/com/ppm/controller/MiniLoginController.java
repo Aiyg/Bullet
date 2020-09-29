@@ -9,14 +9,12 @@ import com.ppm.service.RedisService;
 import com.ppm.utils.DataResult;
 import com.ppm.utils.HttpTools;
 import com.ppm.utils.StringTools;
+import com.ppm.utils.WebSocketServer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -106,9 +104,9 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/findTwain"})
     @ResponseBody
-    public DataResult findTwain(String openid,String activityId, HttpServletRequest request) throws IOException {
+    public DataResult findTwain(String oid,String activityId, HttpServletRequest request) throws IOException {
         try{
-            WxMember wxMember = wxMemberMapper.findOne(openid);
+            WxMember wxMember = wxMemberMapper.findOne(oid);
             List<WxMember> list = new ArrayList<>();
             if("1".equals(wxMember.getSex())){
                 list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"2");
@@ -144,12 +142,13 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/sendBullet"})
     @ResponseBody
-    public DataResult sendBullet(String openid,Integer activityId,String content, HttpServletRequest request) throws IOException {
+    public DataResult sendBullet(String oid,Integer activityId,String content,String type, HttpServletRequest request) throws IOException {
         try{
-            WxMember wxMember = wxMemberMapper.findOne(openid);
+            WxMember wxMember = wxMemberMapper.findOne(oid);
             BulletSendRecord record = new BulletSendRecord();
             record.setActivityId(activityId);
             record.setContent(content);
+            record.setType(type);
             record.setCreateTime(new Date());
             record.setStatus("0");
             record.setWxMemberId(wxMember.getId());
@@ -166,9 +165,9 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/bulletList"})
     @ResponseBody
-    public DataResult bulletList(String openid,Integer activityId, HttpServletRequest request) throws IOException {
+    public DataResult bulletList(String oid,Integer activityId, HttpServletRequest request) throws IOException {
         try{
-            WxMember wxMember = wxMemberMapper.findOne(openid);
+            WxMember wxMember = wxMemberMapper.findOne(oid);
             BulletSendRecord record = new BulletSendRecord();
             record.setActivityId(activityId);
             record.setStatus("0");
@@ -193,8 +192,8 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/friendList"})
     @ResponseBody
-    public DataResult friendList(String openid, HttpServletRequest request) throws IOException {
-        WxMember wxMember = wxMemberMapper.findOne(openid);
+    public DataResult friendList(String oid, HttpServletRequest request) throws IOException {
+        WxMember wxMember = wxMemberMapper.findOne(oid);
         WxFriend record = new WxFriend();
         record.setWxMemberId(wxMember.getId());
         List<WxFriend> list = wxFriendMapper.friendList(record);
@@ -207,14 +206,38 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/chatList"})
     @ResponseBody
-    public DataResult chatList(String openid,Integer wxMemberFriendId, HttpServletRequest request) throws IOException {
-        WxMember wxMember = wxMemberMapper.findOne(openid);
+    public DataResult chatList(String oid,Integer wxMemberFriendId, HttpServletRequest request) throws IOException {
+        WxMember wxMember = wxMemberMapper.findOne(oid);
         WxFriend record = new WxFriend();
         record.setWxMemberId(wxMember.getId());
         record.setWxMemberFriendId(wxMemberFriendId);
         List<WxFriend> list = wxFriendMapper.chatList(record);
 
         return DataResult.success(list);
+    }
+
+
+    //推送数据接口
+    @ResponseBody
+    @RequestMapping("/socket/push")
+    public Map pushToWeb(String cid, String oid, String message) {
+        Map result = new HashMap();
+        try {
+            WxMember sendMem = wxMemberMapper.findOne(oid);
+            WxFriend wxFriend = new WxFriend();
+            wxFriend.setContent(message);
+            wxFriend.setCreateTime(new Date());
+            wxFriend.setWxMemberId(sendMem.getId());
+            wxFriend.setWxMemberFriendId(Integer.parseInt(cid));
+            wxFriendMapper.insert(wxFriend);
+
+            WebSocketServer.sendInfo(message,cid);
+            result.put("code", 0);
+            result.put("msg", "success");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

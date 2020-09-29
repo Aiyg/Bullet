@@ -16,9 +16,20 @@ public class BulletSendRecord implements Serializable {
 
     private Date createTime;
 
+    private String type;
+
     private String nickName;
 
     private String headImg;
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getNickName() {
         return nickName;

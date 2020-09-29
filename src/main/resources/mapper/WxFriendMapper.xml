@@ -21,7 +21,9 @@
   <select id="chatList" resultType="com.ppm.entity.WxFriend">
     SELECT
         a.wx_member_friend_id wxMemberFriendId,
+        a.wx_member_id wxMemberId,
         a.content,
+        a.create_time createTime,
         b.nick_name nickName,
         b.head_img headImg
     FROM

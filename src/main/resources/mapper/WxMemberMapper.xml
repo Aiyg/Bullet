@@ -31,7 +31,7 @@
     delete from wx_member
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ppm.entity.WxMember">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.ppm.entity.WxMember">
     insert into wx_member (nick_name, head_img,
       area, unionid, openid,sex,
       create_time)

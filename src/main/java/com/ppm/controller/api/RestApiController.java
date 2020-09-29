@@ -77,26 +77,4 @@ public class RestApiController {
         mav.addObject("userId", userId);
         return mav;
     }
-    //推送数据接口
-    @ResponseBody
-    @RequestMapping("/socket/push/{cid}")
-    public Map pushToWeb(@PathVariable String cid,String openid, String message) {
-        Map result = new HashMap();
-        try {
-            WxMember sendMem = wxMemberMapper.findOne(openid);
-            WxFriend wxFriend = new WxFriend();
-            wxFriend.setContent(message);
-            wxFriend.setCreateTime(new Date());
-            wxFriend.setWxMemberId(sendMem.getId());
-            wxFriend.setWxMemberFriendId(Integer.parseInt(cid));
-            wxFriendMapper.insert(wxFriend);
-
-            WebSocketServer.sendInfo(message,cid);
-            result.put("code", 200);
-            result.put("msg", "success");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 }
