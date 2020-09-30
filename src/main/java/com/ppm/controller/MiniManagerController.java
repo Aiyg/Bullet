@@ -1,20 +1,31 @@
 package com.ppm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.ppm.aop.annotation.LogAnnotation;
+import com.ppm.entity.Advert;
+import com.ppm.entity.SysUser;
 import com.ppm.mapper.*;
 import com.ppm.service.RedisService;
+import com.ppm.service.UserService;
+import com.ppm.utils.DataResult;
 import com.ppm.utils.HttpTools;
+import com.ppm.utils.PageUtils;
 import com.ppm.utils.WeiXinUtil;
+import com.ppm.vo.req.AdvertPageReqVO;
+import com.ppm.vo.req.UserPageReqVO;
+import com.ppm.vo.resp.PageVO;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,13 +54,50 @@ public class MiniManagerController {
     @Autowired
     private AdvertMapper advertMapper;
     @Autowired
-    private WxFriendMapper wxFriendMapper;
+    private UserService userService;
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public void getCode(HttpServletRequest request,String activityId, HttpServletResponse response) throws IOException {
-
+    //获取企业用户列表
+    @PostMapping("/users")
+    public DataResult<PageVO<SysUser>> pageInfo(@RequestBody UserPageReqVO vo){
+        DataResult<PageVO<SysUser>> result= DataResult.success();
+        result.setData(userService.pageInfo(vo));
+        return result;
     }
 
+    //广告管理
+    @PostMapping("/advertList")
+    public DataResult advertList(AdvertPageReqVO vo,HttpServletRequest request){
+        vo.setUserId((String) request.getAttribute("userId"));
+        PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        return DataResult.success(PageUtils.getPageVO(advertMapper.selectAll(vo)));
+    }
+
+    @PostMapping("/advertDetail")
+    public DataResult advertDetail(Integer id,HttpServletRequest request){
+        return DataResult.success(advertMapper.selectByPrimaryKey(id));
+    }
+
+    @PostMapping("/advertAdd")
+    public DataResult advertAdd(Advert advert,HttpServletRequest request){
+        advert.setIsDeleted("0");
+        advert.setCreateTime(new Date());
+        advert.setUserId((String) request.getAttribute("userId"));
+        advertMapper.insert(advert);
+        return DataResult.success();
+    }
+    @PostMapping("/advertUpdate")
+    public DataResult advertUpdate(Advert advert,HttpServletRequest request){
+        advert.setUpdateTime(new Date());
+        advertMapper.updateByPrimaryKeySelective(advert);
+        return DataResult.success();
+    }
+
+    @PostMapping("/advertDel")
+    public DataResult advertDel(Advert advert,HttpServletRequest request){
+        advert.setIsDeleted("1");
+        advertMapper.updateByPrimaryKeySelective(advert);
+        return DataResult.success();
+    }
 
 
 }

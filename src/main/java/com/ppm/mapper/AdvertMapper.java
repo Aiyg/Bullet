@@ -1,6 +1,8 @@
 package com.ppm.mapper;
 
 import com.ppm.entity.Advert;
+import com.ppm.vo.req.AdvertPageReqVO;
+import com.ppm.vo.req.UserPageReqVO;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public interface AdvertMapper {
     Advert selectByPrimaryKey(Integer id);
 
     List<Advert> findAvert(String userId);
+
+    List<Advert> selectAll(AdvertPageReqVO vo);
 
     int updateByPrimaryKeySelective(Advert record);
 
