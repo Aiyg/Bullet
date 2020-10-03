@@ -10,11 +10,21 @@ public class Bullet implements Serializable {
 
     private String type;
 
+    private String userId;
+
     private Date createTime;
 
     private String isDeleted;
 
     private static final long serialVersionUID = 1L;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Integer getId() {
         return id;

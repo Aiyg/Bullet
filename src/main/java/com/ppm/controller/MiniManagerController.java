@@ -2,7 +2,9 @@ package com.ppm.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.ppm.aop.annotation.LogAnnotation;
+import com.ppm.entity.Activity;
 import com.ppm.entity.Advert;
+import com.ppm.entity.Bullet;
 import com.ppm.entity.SysUser;
 import com.ppm.mapper.*;
 import com.ppm.service.RedisService;
@@ -11,7 +13,9 @@ import com.ppm.utils.DataResult;
 import com.ppm.utils.HttpTools;
 import com.ppm.utils.PageUtils;
 import com.ppm.utils.WeiXinUtil;
+import com.ppm.vo.req.ActivityPageReqVO;
 import com.ppm.vo.req.AdvertPageReqVO;
+import com.ppm.vo.req.BulletPageReqVO;
 import com.ppm.vo.req.UserPageReqVO;
 import com.ppm.vo.resp.PageVO;
 import io.swagger.annotations.ApiOperation;
@@ -57,27 +61,37 @@ public class MiniManagerController {
     private UserService userService;
 
     //获取企业用户列表
-    @PostMapping("/users")
+    @RequestMapping("/users")
     public DataResult<PageVO<SysUser>> pageInfo(@RequestBody UserPageReqVO vo){
         DataResult<PageVO<SysUser>> result= DataResult.success();
         result.setData(userService.pageInfo(vo));
         return result;
     }
 
+    //用户锁定
+    @RequestMapping("/userLocd")
+    public DataResult userLocd(String id){
+        SysUser sysUser= new SysUser();
+        sysUser.setId(id);
+        sysUser.setStatus(2);
+        userService.updateByPrimaryKeySelective(sysUser);
+        return  DataResult.success();
+    }
+
     //广告管理
-    @PostMapping("/advertList")
+    @RequestMapping("/advertList")
     public DataResult advertList(AdvertPageReqVO vo,HttpServletRequest request){
         vo.setUserId((String) request.getAttribute("userId"));
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         return DataResult.success(PageUtils.getPageVO(advertMapper.selectAll(vo)));
     }
 
-    @PostMapping("/advertDetail")
+    @RequestMapping("/advertDetail")
     public DataResult advertDetail(Integer id,HttpServletRequest request){
         return DataResult.success(advertMapper.selectByPrimaryKey(id));
     }
 
-    @PostMapping("/advertAdd")
+    @RequestMapping("/advertAdd")
     public DataResult advertAdd(Advert advert,HttpServletRequest request){
         advert.setIsDeleted("0");
         advert.setCreateTime(new Date());
@@ -85,19 +99,83 @@ public class MiniManagerController {
         advertMapper.insert(advert);
         return DataResult.success();
     }
-    @PostMapping("/advertUpdate")
+    @RequestMapping("/advertUpdate")
     public DataResult advertUpdate(Advert advert,HttpServletRequest request){
         advert.setUpdateTime(new Date());
         advertMapper.updateByPrimaryKeySelective(advert);
         return DataResult.success();
     }
 
-    @PostMapping("/advertDel")
+    @RequestMapping("/advertDel")
     public DataResult advertDel(Advert advert,HttpServletRequest request){
         advert.setIsDeleted("1");
         advertMapper.updateByPrimaryKeySelective(advert);
         return DataResult.success();
     }
 
+    //-----------------------------活动管理----------------------------------
+
+    //活动管理
+    @RequestMapping("/activityList")
+    public DataResult activityList(ActivityPageReqVO vo, HttpServletRequest request){
+        vo.setUserId((String) request.getAttribute("userId"));
+        PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        return DataResult.success(PageUtils.getPageVO(activityMapper.selectAll(vo)));
+    }
+
+    @RequestMapping("/activityDetail")
+    public DataResult activityDetail(Integer id,HttpServletRequest request){
+        return DataResult.success(activityMapper.selectByPrimaryKey(id));
+    }
+
+    @RequestMapping("/activitytAdd")
+    public DataResult activitytAdd(Activity activity, HttpServletRequest request){
+        activity.setIsDeleted("0");
+        activity.setCreateTime(new Date());
+        activity.setUserId((String) request.getAttribute("userId"));
+        activityMapper.insert(activity);
+        return DataResult.success();
+    }
+    @RequestMapping("/activityUpdate")
+    public DataResult activityUpdate(Activity activity,HttpServletRequest request){
+        activity.setUpdateTime(new Date());
+        activityMapper.updateByPrimaryKeySelective(activity);
+        return DataResult.success();
+    }
+
+    //-------------弹幕管理---------------------------------------
+
+    //弹幕管理
+    @RequestMapping("/bulletList")
+    public DataResult bulletList(BulletPageReqVO vo, HttpServletRequest request){
+        vo.setUserId((String) request.getAttribute("userId"));
+        PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        return DataResult.success(PageUtils.getPageVO(bulletMapper.selectAll(vo)));
+    }
+
+    @RequestMapping("/bulletDetail")
+    public DataResult bulletDetail(Integer id,HttpServletRequest request){
+        return DataResult.success(bulletMapper.selectByPrimaryKey(id));
+    }
+
+    @RequestMapping("/bullettAdd")
+    public DataResult bullettAdd(Bullet bullet, HttpServletRequest request){
+        bullet.setIsDeleted("0");
+        bullet.setCreateTime(new Date());
+        bullet.setUserId((String) request.getAttribute("userId"));
+        bulletMapper.insert(bullet);
+        return DataResult.success();
+    }
+    @RequestMapping("/bulletUpdate")
+    public DataResult bulletUpdate(Bullet bullet,HttpServletRequest request){
+        bulletMapper.updateByPrimaryKeySelective(bullet);
+        return DataResult.success();
+    }
+    @RequestMapping("/bulletDel")
+    public DataResult bulletDel(Bullet bullet,HttpServletRequest request){
+        bullet.setIsDeleted("1");
+        bulletMapper.updateByPrimaryKeySelective(bullet);
+        return DataResult.success();
+    }
 
 }

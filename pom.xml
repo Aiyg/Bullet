@@ -93,6 +93,11 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
         <!--fastJson-->
         <dependency>
             <groupId>com.alibaba</groupId>

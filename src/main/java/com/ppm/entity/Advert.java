@@ -8,7 +8,7 @@ public class Advert implements Serializable {
 
     private String fileUrl;
 
-    private String type;
+    private String type;//1图片 2视频
 
     private String userId;
 

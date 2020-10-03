@@ -10,13 +10,15 @@ import com.ppm.vo.resp.LoginRespVO;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * function 后台管理接口
@@ -65,6 +67,27 @@ public class LoginController {
         return result;
     }
 
+
+    @RequestMapping(value = "/upload")
+    @ResponseBody
+    public String uploadImage(MultipartFile file){
+        //获取文件名称
+        String orgFileName = file.getOriginalFilename();
+        /*String date = new SimpleDateFormat("yyyyMM").format(new Date());
+        String path = filePath+"/"+date+"/image";*/
+        //使用随机数生成文件名称,加点和文件的后缀
+        String fileName = new Date().getTime()+orgFileName;
+        String path = "/home/image/"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        try {
+            //新建一个File实例,放入要存的抽象路径,文件的名字
+            File targetFile = new File(path, fileName);
+            //使用注解流的方式把图片写入文件中
+            FileUtils.writeByteArrayToFile(targetFile, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
 
 
 }

@@ -53,4 +53,6 @@ public interface UserService {
     UserOwnRoleRespVO getUserOwnRole(String userId);
 
     void setUserOwnRole(String userId, List<String> roleIds);
+
+    void updateByPrimaryKeySelective(SysUser sysUser);
 }

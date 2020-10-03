@@ -356,4 +356,8 @@ public class UserServiceImpl implements UserService {
         //清空权鉴缓存
         redisService.delete(Constant.IDENTIFY_CACHE_KEY+userId);
     }
+
+    public void updateByPrimaryKeySelective(SysUser sysUser){
+        sysUserMapper.updateByPrimaryKeySelective(sysUser);
+    }
 }
