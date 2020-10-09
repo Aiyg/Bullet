@@ -57,31 +57,28 @@ public class MiniLoginController  {
      */
     @RequestMapping(value={"/login"})
     @ResponseBody
-    public DataResult login(String code,String activityId, HttpSession session, HttpServletRequest request) throws IOException {
+    public DataResult login(String code,String activityId,String headImg,String nickName,String sex, HttpSession session, HttpServletRequest request) throws IOException {
         try{
             String url = "https://api.weixin.qq.com/sns/jscode2session?" +
                     "appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&" +
                     "grant_type=authorization_code";
             JSONObject jsonObject = HttpTools.httpsRequest(url, "GET", null);
-            String unionid = jsonObject.get("unionid").toString();
             String openid = jsonObject.get("openid").toString();
-            String sex = jsonObject.get("sex").toString();
+            String session_key = jsonObject.get("session_key").toString();
             if (StringUtils.isNotBlank(openid)) {
-                WxMember wxMember = wxMemberMapper.findOne("");
+                WxMember wxMember = wxMemberMapper.findOne(openid);
                 if (wxMember != null) {
-                    wxMember.setHeadImg(jsonObject.get("headimg").toString());
-                    wxMember.setNickName(jsonObject.get("nickname").toString());
+                    wxMember.setHeadImg(headImg);
+                    wxMember.setNickName(nickName);
                     wxMember.setSex(sex);
                     wxMemberMapper.updateByPrimaryKeySelective(wxMember);
                 }else{
                     wxMember=new WxMember();
-                    wxMember.setArea(jsonObject.get("area").toString());//jsonObject.get("area").toString()
                     wxMember.setCreateTime(new Date());
                     wxMember.setSex(sex);
-                    wxMember.setHeadImg(jsonObject.get("headimg").toString());//jsonObject.get("headimg").toString()
-                    wxMember.setNickName(jsonObject.get("nickname").toString());//jsonObject.get("nickname").toString()
-                    wxMember.setOpenid(jsonObject.get("openid").toString());//jsonObject.get("openid").toString()
-                    //wxMember.setUnionid(StringTools.getUUID());//jsonObject.get("unionid").toString()
+                    wxMember.setHeadImg(headImg);
+                    wxMember.setNickName(nickName);
+                    wxMember.setOpenid(openid);
                     wxMemberMapper.insert(wxMember);
                 }
 

@@ -1,9 +1,13 @@
 package com.ppm.controller;
 
+import com.ppm.entity.SysUser;
+import com.ppm.exception.BusinessException;
+import com.ppm.exception.code.BaseResponseCode;
 import com.ppm.mapper.*;
 import com.ppm.service.RedisService;
 import com.ppm.service.UserService;
 import com.ppm.utils.DataResult;
+import com.ppm.utils.StringTools;
 import com.ppm.vo.req.LoginReqVO;
 import com.ppm.vo.req.RegisterReqVO;
 import com.ppm.vo.resp.LoginRespVO;
@@ -45,7 +49,7 @@ public class LoginController {
     @Autowired
     private AdvertMapper advertMapper;
     @Autowired
-    private WxFriendMapper wxFriendMapper;
+    private SysUserMapper sysUserMapper;
 
     @Autowired
     private UserService userService;
@@ -61,7 +65,11 @@ public class LoginController {
     @PostMapping("/register")
     @ApiOperation(value = "用户注册接口")
     public DataResult<String> register(RegisterReqVO vo){
-        vo.setDeptId("1231321");
+        SysUser sysUser1=sysUserMapper.getUserInfoByName(vo.getUsername());
+        if(sysUser1!=null){
+            return DataResult.getResult(BaseResponseCode.USER_REUSE);
+        }
+        vo.setDeptId(StringTools.getUUID());
         DataResult<String> result=DataResult.success();
         result.setData(userService.userRegister(vo));
         return result;
