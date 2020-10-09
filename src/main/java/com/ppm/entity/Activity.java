@@ -10,6 +10,8 @@ public class Activity implements Serializable {
 
     private String title;
 
+    private String img;//背景图片
+
     private String userId;
 
     private Date createTime;
@@ -19,6 +21,14 @@ public class Activity implements Serializable {
     private String isDeleted;
 
     private static final long serialVersionUID = 1L;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public Integer getId() {
         return id;

@@ -69,18 +69,19 @@ public class MiniLoginController  {
             if (StringUtils.isNotBlank(openid)) {
                 WxMember wxMember = wxMemberMapper.findOne("");
                 if (wxMember != null) {
-                    wxMember.setHeadImg("12345645");
-                    wxMember.setNickName("3453456");
+                    wxMember.setHeadImg(jsonObject.get("headimg").toString());
+                    wxMember.setNickName(jsonObject.get("nickname").toString());
+                    wxMember.setSex(sex);
                     wxMemberMapper.updateByPrimaryKeySelective(wxMember);
                 }else{
                     wxMember=new WxMember();
-                    wxMember.setArea("23");//jsonObject.get("area").toString()
+                    wxMember.setArea(jsonObject.get("area").toString());//jsonObject.get("area").toString()
                     wxMember.setCreateTime(new Date());
                     wxMember.setSex(sex);
-                    wxMember.setHeadImg("2323");//jsonObject.get("headimg").toString()
-                    wxMember.setNickName("2332");//jsonObject.get("nickname").toString()
-                    wxMember.setOpenid("sss");//jsonObject.get("openid").toString()
-                    wxMember.setUnionid(StringTools.getUUID());//jsonObject.get("unionid").toString()
+                    wxMember.setHeadImg(jsonObject.get("headimg").toString());//jsonObject.get("headimg").toString()
+                    wxMember.setNickName(jsonObject.get("nickname").toString());//jsonObject.get("nickname").toString()
+                    wxMember.setOpenid(jsonObject.get("openid").toString());//jsonObject.get("openid").toString()
+                    //wxMember.setUnionid(StringTools.getUUID());//jsonObject.get("unionid").toString()
                     wxMemberMapper.insert(wxMember);
                 }
 

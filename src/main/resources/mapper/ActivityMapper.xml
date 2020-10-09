@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.ppm.entity.Activity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -11,7 +12,7 @@
     <result column="is_deleted" jdbcType="VARCHAR" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, title, user_id, create_time, update_time, is_deleted
+    id, type, title,img, user_id, create_time, update_time, is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -33,10 +34,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Activity">
-    insert into activity (type, title,
+    insert into activity (type, title,img
       user_id, create_time, update_time, 
       is_deleted)
-    values (#{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+    values (#{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},#{img},
       #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=VARCHAR})
   </insert>
@@ -94,6 +95,9 @@
     <set>
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        img = #{img},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
