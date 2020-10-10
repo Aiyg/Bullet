@@ -84,7 +84,10 @@ public class MiniLoginController  {
 
 
                 List<WxMember> list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+sex);
-                list.add(wxMember);
+                for(int i=0;i<20; i++){
+                    list.add(wxMember);
+                }
+                redisService.delete(Constant.ONLINE_WX_MEMBER+activityId+sex);
                 redisService.setList(Constant.ONLINE_WX_MEMBER+activityId+sex,list,2, TimeUnit.HOURS);
                 /*session.setAttribute(Constant.MEMBER,wxMember);
                 session.setMaxInactiveInterval(600);//登陆十分钟有效期*/
@@ -106,8 +109,9 @@ public class MiniLoginController  {
         try{
             WxMember wxMember = wxMemberMapper.findOne(oid);
             List<WxMember> list = new ArrayList<>();
+
             if("1".equals(wxMember.getSex())){
-                list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"2");
+                list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
             }else{
                 list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
             }
