@@ -13,6 +13,7 @@ import com.ppm.utils.WebSocketServer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -124,6 +125,46 @@ public class MiniLoginController  {
     }
 
     /**
+     * 随机匹配对对碰一对
+     */
+    @RequestMapping(value={"/randomTwain"})
+    @ResponseBody
+    public DataResult randomTwain(String activityId, HttpServletRequest request) throws IOException {
+        try{
+            List<WxMember> newList = new ArrayList<>();
+            List<WxMember> boyList = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
+
+            List<WxMember> girlList = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"2");
+
+            WxMember boy = boyList.get(new Random().nextInt(boyList.size()));
+            WxMember girl = girlList.get(new Random().nextInt(girlList.size()));
+            if(boyList.size()>0 && girlList.size()>0) {
+                WxFriend wxFriend = new WxFriend();
+                wxFriend.setContent("嗨,你好");
+                wxFriend.setCreateTime(new Date());
+                wxFriend.setWxMemberId(boy.getId());
+                wxFriend.setWxMemberFriendId(girl.getId());
+                wxFriendMapper.insert(wxFriend);
+
+                WxFriend wxFriend1 = new WxFriend();
+                wxFriend1.setContent("嗨,你好");
+                wxFriend1.setCreateTime(new Date());
+                wxFriend1.setWxMemberId(girl.getId());
+                wxFriend1.setWxMemberFriendId(boy.getId());
+                wxFriendMapper.insert(wxFriend1);
+
+                newList.add(boy);
+                newList.add(girl);
+            }
+            return DataResult.success(newList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);
+        }
+    }
+
+
+    /**
      * 弹幕清单
      */
     @RequestMapping(value={"/bullet"})
@@ -146,6 +187,7 @@ public class MiniLoginController  {
     @ResponseBody
     public DataResult sendBullet(String oid,Integer activityId,String content,String type, HttpServletRequest request) throws IOException {
         try{
+            WebSocketServer.sendInfo(content,activityId.toString());
             WxMember wxMember = wxMemberMapper.findOne(oid);
             BulletSendRecord record = new BulletSendRecord();
             record.setActivityId(activityId);

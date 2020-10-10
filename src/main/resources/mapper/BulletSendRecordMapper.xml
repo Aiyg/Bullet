@@ -8,6 +8,7 @@
     <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -28,6 +29,7 @@
     a.type,
     a.content,
     b.head_img,
+    b.sex,
     b.nick_name
     from bullet_send_record a left join
     wx_member b on a.wx_member_id = b.id

@@ -22,6 +22,15 @@ public class BulletSendRecord implements Serializable {
 
     private String headImg;
 
+    private String sex;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     public String getType() {
         return type;
