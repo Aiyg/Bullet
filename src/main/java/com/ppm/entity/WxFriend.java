@@ -14,7 +14,7 @@ public class WxFriend implements Serializable {
 
     private String content;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat
     private Date createTime;
 
     private String nickName;

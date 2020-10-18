@@ -27,20 +27,21 @@
     <where>
       user_id=#{userId} and is_deleted=0
     </where>
+    order by type desc,create_time desc
   </select>
 
   <select id="findAvert" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from advert
-    where user_id = #{userId} and is_deleted=0 order by type desc
+    where user_id = #{userId} and is_deleted=0 order by type desc,create_time desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from advert
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Advert">
-    insert into advert (file_url, `type`,
+    insert into advert (file_url, type,
       user_id, create_time, update_time, 
       is_deleted)
     values (#{fileUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},

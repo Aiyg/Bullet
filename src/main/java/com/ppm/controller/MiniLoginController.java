@@ -85,9 +85,10 @@ public class MiniLoginController  {
 
 
                 List<WxMember> list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+sex);
-                for(int i=0;i<20; i++){
+                if(!list.contains(openid)){
                     list.add(wxMember);
                 }
+
                 redisService.delete(Constant.ONLINE_WX_MEMBER+activityId+sex);
                 redisService.setList(Constant.ONLINE_WX_MEMBER+activityId+sex,list,2, TimeUnit.HOURS);
                 /*session.setAttribute(Constant.MEMBER,wxMember);
@@ -112,7 +113,7 @@ public class MiniLoginController  {
             List<WxMember> list = new ArrayList<>();
 
             if("1".equals(wxMember.getSex())){
-                list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
+                list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"2");
             }else{
                 list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
             }
@@ -187,7 +188,6 @@ public class MiniLoginController  {
     @ResponseBody
     public DataResult sendBullet(String oid,Integer activityId,String content,String type, HttpServletRequest request) throws IOException {
         try{
-            WebSocketServer.sendInfo(content,activityId.toString());
             WxMember wxMember = wxMemberMapper.findOne(oid);
             BulletSendRecord record = new BulletSendRecord();
             record.setActivityId(activityId);
@@ -197,6 +197,7 @@ public class MiniLoginController  {
             record.setStatus("0");
             record.setWxMemberId(wxMember.getId());
             bulletSendRecordMapper.insert(record);
+            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),activityId.toString());
             return DataResult.success();
         }catch (Exception e){
             e.printStackTrace();

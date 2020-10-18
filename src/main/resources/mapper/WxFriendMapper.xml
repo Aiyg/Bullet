@@ -31,7 +31,8 @@
         wx_member b
     WHERE
         a.wx_member_friend_id = b.id
-    AND wx_member_id = #{wxMemberId} and wx_member_friend_id = #{wxMemberFriendId}
+    AND ((wx_member_id = #{wxMemberId} and wx_member_friend_id = #{wxMemberFriendId})
+    or (wx_member_id = #{wxMemberFriendId} and wx_member_friend_id = #{wxMemberId}))
     ORDER BY a.create_time desc limit 20
   </select>
 

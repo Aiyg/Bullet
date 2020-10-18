@@ -62,7 +62,7 @@ public class MiniManagerController {
 
     //获取企业用户列表
     @RequestMapping("/users")
-    public DataResult<PageVO<SysUser>> pageInfo(@RequestBody UserPageReqVO vo){
+    public DataResult<PageVO<SysUser>> pageInfo(UserPageReqVO vo){
         DataResult<PageVO<SysUser>> result= DataResult.success();
         result.setData(userService.pageInfo(vo));
         return result;

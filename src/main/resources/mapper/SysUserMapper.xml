@@ -263,6 +263,7 @@
         AND status=#{status}
       </if>
     </where>
+    order by create_time desc
   </select>
 
   <select id="selectUserInfoByDeptIds" resultMap="BaseResultMap">

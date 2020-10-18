@@ -38,9 +38,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Bullet">
-    insert into bullet (title, type,
+    insert into bullet (title, type,user_id,
       create_time, is_deleted)
-    values (#{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+    values (#{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ppm.entity.Bullet">
