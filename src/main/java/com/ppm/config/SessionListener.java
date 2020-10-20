@@ -19,7 +19,7 @@ public class SessionListener implements HttpSessionListener{
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         onlineCount++;
-        System.out.println("【HttpSessionListener监听器】 sessionCreated, onlineCount:" + onlineCount);
+        //System.out.println("【HttpSessionListener监听器】 sessionCreated, onlineCount:" + onlineCount);
         se.getSession().getServletContext().setAttribute("onlineCount", onlineCount);
     }
 
@@ -32,7 +32,7 @@ public class SessionListener implements HttpSessionListener{
             onlineCount--;
         }
 
-        System.out.println("【HttpSessionListener监听器】 sessionDestroyed, onlineCount:" + se.getSession().getAttribute("test")+ se.getSession().getAttribute("test2"));
+        //System.out.println("【HttpSessionListener监听器】 sessionDestroyed, onlineCount:" + se.getSession().getAttribute("test")+ se.getSession().getAttribute("test2"));
         se.getSession().getServletContext().setAttribute("onlineCount", onlineCount);
     }
 
