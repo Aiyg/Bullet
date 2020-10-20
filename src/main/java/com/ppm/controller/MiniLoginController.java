@@ -85,7 +85,13 @@ public class MiniLoginController  {
 
 
                 List<WxMember> list = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+sex);
-                if(!list.contains(openid)){
+                Boolean boo = true;
+                for(WxMember mem:list){
+                    if(mem.getOpenid().equals(openid)){
+                        boo=false;
+                    }
+                }
+                if(boo){
                     list.add(wxMember);
                 }
 

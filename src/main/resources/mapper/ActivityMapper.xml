@@ -25,7 +25,7 @@
     <include refid="Base_Column_List" />
     from activity
     where user_id = #{userId}
-    <if test="">
+    <if test="title!=null and title != ''">
       and title like concat('%',#{title},'%')
     </if>
   </select>
@@ -34,7 +34,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Activity">
-    insert into activity (type, title,img
+    insert into activity (type, title,img,
       user_id, create_time, update_time, 
       is_deleted)
     values (#{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},#{img},
