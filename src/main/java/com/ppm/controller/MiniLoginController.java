@@ -203,7 +203,8 @@ public class MiniLoginController  {
             record.setStatus("0");
             record.setWxMemberId(wxMember.getId());
             bulletSendRecordMapper.insert(record);
-            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),activityId.toString());
+            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),"11"+activityId.toString());
+            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),"22"+activityId.toString());
             return DataResult.success();
         }catch (Exception e){
             e.printStackTrace();
@@ -282,7 +283,7 @@ public class MiniLoginController  {
             wxFriend.setWxMemberFriendId(Integer.parseInt(cid));
             wxFriendMapper.insert(wxFriend);
 
-            WebSocketServer.sendInfo(message,cid);
+            WebSocketServer.sendInfo(message,"88"+cid);
             result.put("code", 0);
             result.put("msg", "success");
         } catch (IOException e) {
