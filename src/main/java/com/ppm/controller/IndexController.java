@@ -36,6 +36,12 @@ public class IndexController {
 
         return "web";
     }
+
+    @GetMapping("/activity")
+    public String activity(String id,Model model){
+        model.addAttribute("id",id);
+        return "act/index";
+    }
     /**
      * 进入首页
      * @Author:      changguangqi

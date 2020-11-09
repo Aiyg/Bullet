@@ -25,7 +25,7 @@
         </commentGenerator>
 
         <!-- jdbc连接 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/bullet_screen"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://101.200.84.235:3306/bullet_screen"
                         userId="root"
                         password="112233"/>
         <!-- 类型转换 -->
@@ -49,14 +49,14 @@
         </javaClientGenerator>
 
 
-        <table tableName="activity" domainObjectName="Activity"
+        <table tableName="friend" domainObjectName="Friend"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="true">
         </table>
-        <table tableName="advert" domainObjectName="Advert"
+        <!--<table tableName="advert" domainObjectName="Advert"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -90,7 +90,7 @@
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="true">
-        </table>
+        </table>-->
 
 
 <!--        <table tableName="dws_private_domain" domainObjectName="dwsPrivateDomain" enableCountByExample="false" enableUpdateByExample="false"-->

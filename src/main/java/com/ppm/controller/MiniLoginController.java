@@ -52,6 +52,8 @@ public class MiniLoginController  {
 
     @Autowired
     private WxFriendMapper wxFriendMapper;
+    @Autowired
+    private FriendMapper friendMapper;
 
     /**
      * 小程序登陆
@@ -203,8 +205,9 @@ public class MiniLoginController  {
             record.setStatus("0");
             record.setWxMemberId(wxMember.getId());
             bulletSendRecordMapper.insert(record);
-            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),"11"+activityId.toString());
-            WebSocketServer.sendInfo(JSONObject.parse(record.toString()).toString(),"22"+activityId.toString());
+            record.setHeadImg(wxMember.getHeadImg());
+            WebSocketServer.sendInfo(net.sf.json.JSONObject.fromObject(record).toString(),"11"+activityId.toString());
+            WebSocketServer.sendInfo(net.sf.json.JSONObject.fromObject(record).toString(),"22"+activityId.toString());
             return DataResult.success();
         }catch (Exception e){
             e.printStackTrace();
@@ -282,8 +285,26 @@ public class MiniLoginController  {
             wxFriend.setWxMemberId(sendMem.getId());
             wxFriend.setWxMemberFriendId(Integer.parseInt(cid));
             wxFriendMapper.insert(wxFriend);
+            Friend friend = new Friend();
+            friend.setWxMemberId(sendMem.getId().toString());
+            friend.setWxMemberFriendId(cid);
+            friend = friendMapper.getFriend(friend);
+            //首次对话，添加好友信息
+            if(friend==null){
+                friend = new Friend();
+                friend.setWxMemberId(sendMem.getId().toString());
+                friend.setWxMemberFriendId(cid);
+                friend.setCreateTime(new Date());
+                friendMapper.insert(friend);
+//------------------------互相添加为好友---------------------------//
+                friend = new Friend();
+                friend.setWxMemberId(cid);
+                friend.setWxMemberFriendId(sendMem.getId().toString());
+                friend.setCreateTime(new Date());
+                friendMapper.insert(friend);
+            }
 
-            WebSocketServer.sendInfo(message,"88"+cid);
+            WebSocketServer.sendInfo(message,cid);
             result.put("code", 0);
             result.put("msg", "success");
         } catch (IOException e) {

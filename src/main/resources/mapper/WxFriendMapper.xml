@@ -30,7 +30,7 @@
         wx_friend a,
         wx_member b
     WHERE
-        a.wx_member_friend_id = b.id
+        a.wx_member_id = b.id
     AND ((wx_member_id = #{wxMemberId} and wx_member_friend_id = #{wxMemberFriendId})
     or (wx_member_id = #{wxMemberFriendId} and wx_member_friend_id = #{wxMemberId}))
     ORDER BY a.create_time desc limit 20
@@ -38,20 +38,20 @@
 
   <!--好友列表-->
   <select id="friendList" resultType="com.ppm.entity.WxFriend">
-    select
-    a.wx_member_friend_id wxMemberFriendId,
-    (select content from wx_friend where wx_member_id=a.wx_member_id
-    and wx_member_friend_id = a.wx_member_friend_id ORDER BY create_time desc limit 1 ) content,
-    (select create_time from wx_friend where wx_member_id=a.wx_member_id
-    and wx_member_friend_id = a.wx_member_friend_id ORDER BY create_time desc limit 1 ) createTime,
-    b.nick_name nickName,
-    b.head_img headImg
-    from (
-    select wx_member_id,wx_member_friend_id from wx_friend where wx_member_id = #{wxMemberId}
-    group by wx_member_id,wx_member_friend_id limit 20) a,wx_member b
-    WHERE
-        a.wx_member_friend_id = b.id
-    AND a.wx_member_id = #{wxMemberId} ORDER BY createTime desc
+    SELECT * from (
+      select
+		a.wx_member_friend_id wxMemberFriendId,
+		(select content from wx_friend where (wx_member_id=a.wx_member_id or wx_member_id=a.wx_member_friend_id)
+        and (wx_member_friend_id = a.wx_member_id or wx_member_friend_id = a.wx_member_friend_id) ORDER BY create_time desc limit 1 ) content,
+        (select create_time from wx_friend where (wx_member_id=a.wx_member_id or wx_member_id=a.wx_member_friend_id)
+        and (wx_member_friend_id = a.wx_member_id or wx_member_friend_id = a.wx_member_friend_id) ORDER BY create_time desc limit 1 ) createTime,
+            b.nick_name nickName,
+        b.head_img headImg
+    from
+        friend a,
+        wx_member b
+    where
+        a.wx_member_friend_id = b.id and wx_member_id= #{wxMemberId} limit 10) ww ORDER BY createTime desc
   </select>
 
 

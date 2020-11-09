@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppm.mapper.FriendMapper">
+  <resultMap id="BaseResultMap" type="com.ppm.entity.Friend">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="wx_member_id" jdbcType="VARCHAR" property="wxMemberId" />
+    <result column="wx_member_friend_id" jdbcType="VARCHAR" property="wxMemberFriendId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, wx_member_id, wx_member_friend_id, create_time
+  </sql>
+  <select id="getFriend" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from friend
+    where wx_member_id=#{wxMemberId} and wx_member_friend_id=#{wxMemberFriendId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from friend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ppm.entity.Friend">
+    insert into friend (wx_member_id, wx_member_friend_id,
+      create_time)
+    values (#{wxMemberId,jdbcType=VARCHAR}, #{wxMemberFriendId,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppm.entity.Friend">
+    insert into friend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="wxMemberId != null">
+        wx_member_id,
+      </if>
+      <if test="wxMemberFriendId != null">
+        wx_member_friend_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wxMemberId != null">
+        #{wxMemberId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxMemberFriendId != null">
+        #{wxMemberFriendId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppm.entity.Friend">
+    update friend
+    <set>
+      <if test="wxMemberId != null">
+        wx_member_id = #{wxMemberId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxMemberFriendId != null">
+        wx_member_friend_id = #{wxMemberFriendId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppm.entity.Friend">
+    update friend
+    set wx_member_id = #{wxMemberId,jdbcType=VARCHAR},
+      wx_member_friend_id = #{wxMemberFriendId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
