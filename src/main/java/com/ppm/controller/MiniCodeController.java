@@ -42,7 +42,7 @@ public class MiniCodeController {
         String codeUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
         Map<String,Object> param = new HashMap<>();
         param.put("scene",activityId);
-        param.put("page","pages/logon/logon");
+        param.put("page","pages/home/home");
         HttpTools.doImgPost(codeUrl, param);
     }
 

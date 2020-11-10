@@ -3,7 +3,10 @@ package com.ppm.controller;
 
 
 
+import com.ppm.entity.Activity;
+import com.ppm.mapper.ActivityMapper;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+    @Autowired
+    private ActivityMapper activityMapper;
 
     @GetMapping("/login")
     public String logout(){
@@ -38,8 +43,11 @@ public class IndexController {
     }
 
     @GetMapping("/activity")
-    public String activity(String id,Model model){
+    public String activity(Integer id,Model model){
+
+        Activity activity = activityMapper.selectByPrimaryKey(id);
         model.addAttribute("id",id);
+        model.addAttribute("activity",activity);
         return "act/index";
     }
     /**

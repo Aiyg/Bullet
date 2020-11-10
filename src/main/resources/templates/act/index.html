@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+	  xmlns:th="http://www.thymeleaf.org"
+>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -244,17 +246,15 @@
 		<div id="bug">
 			<div class="bush">
 				<img src="/images/anniu.jpg"/>
-				<p>XXX与XXX的婚礼现场</p>
+				<p>[[${activity.title}]]</p>
 			</div>
-			
 			<div id="carousel">
 				<ul class="bgmap">
-					<li><img src="/images/nav-ban1.jpg" /></li>
-					<li><img src="/images/nav-ban2.jpg" /></li>
-					<li><img src="/images/nav-ban3.jpg" /></li>				
+					<li><img id="bg" th:src="'/img/'+${activity.img}"/></li>
+					<!--<li><img src="/images/nav-ban2.jpg" /></li>
+					<li><img src="/images/nav-ban3.jpg" /></li>		-->
 				</ul>			
 			</div>		
-			[[${id}]]
 			<div class="xizh">
 				<div class="nan">
 					<img src="/images/nan.jpg"/>
@@ -263,11 +263,10 @@
 				<div class="bgzh">
 					<img src="/images/timg.jpg"/>
 				</div>
-				
-				
+
 				<div class="nv" >
 					<img src="/images/nv.jpg"/>
-				</div>					
+				</div>
 			</div>
 			
 			<img class="buxc" src="/images/anniu.jpg"/>
@@ -290,7 +289,7 @@
 				</ul>			
 			</div>
 			<div class="erweima">
-				<img src="/images/nav-ban1.jpg"/>
+				<img th:src="'/api/code/getCode?activityId='+${activity.id}"/>
 			</div>
 		</div>
 		
@@ -309,7 +308,7 @@
 				$('.bgmap').children('li').clone().appendTo($('.bgmap'))
 			
 			
-				function autoPlay(){
+				/*function autoPlay(){
 					iNow++;
 					if(iNow==len*2){
 						iNow=len
@@ -320,8 +319,22 @@
 				
 				timer=setInterval(function(){
 					autoPlay()
-				},3000)	
-				
+				},3000)	*/
+
+                /*$.ajax({
+                    type:"POST",
+                    async: false,
+                    url :"/api/wx/activity",
+                    data:{id:id},
+                }).done(function(data){
+                    if(data.success){
+                        alert(data.message);
+                    }else {
+                        alert(data.message);
+                    }
+                    history.go(0)
+                });*/
+
 //				点图标
 				$(".buxc").toggle(function(){
 					$(".xizh").fadeIn();
