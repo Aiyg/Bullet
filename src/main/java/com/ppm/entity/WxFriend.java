@@ -17,6 +17,7 @@ public class WxFriend implements Serializable {
     @JsonFormat
     private Date createTime;
 
+
     private String nickName;
 
     private String headImg;
