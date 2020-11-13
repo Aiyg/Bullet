@@ -283,9 +283,13 @@
 		<div id="bug2">
 			<div id="yous">
 				<ul class="bgmap2">
-					<li><img src="/images/nav-ban1.jpg" /></li>
-					<li><img src="/images/nav-ban2.jpg" /></li>
-					<li><img src="/images/nav-ban3.jpg" /></li>				
+
+					<li th:each="advert : ${advertList}" th:id="${advert.id}">
+						<img th:src="'/img/'+ ${advert.fileUrl}">
+					</li>
+
+					<!--<li><img src="/images/nav-ban2.jpg" /></li>
+					<li><img src="/images/nav-ban3.jpg" /></li>		-->
 				</ul>			
 			</div>
 			<div class="erweima">
@@ -353,7 +357,7 @@
 				var iNow2=0;
 				
 				
-				$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
+				//$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
 			
 			
 				function autoPlay2(){
@@ -367,7 +371,7 @@
 				
 				timer2=setInterval(function(){
 					autoPlay2()
-				},1000)	
+				},2000)
 				
 //			弹幕
 			data=[
@@ -392,7 +396,7 @@
 			},2000)
 			
 			
-			var iHeight=$(".da").height()-80;				
+			var iHeight=$(".da").height()-80;
 				setInterval(function(){
 					var red = parseInt(Math.random()*257).toString(16);
 					var blue = parseInt(Math.random()*257).toString(16);

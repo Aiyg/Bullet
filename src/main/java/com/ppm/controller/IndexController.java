@@ -4,15 +4,19 @@ package com.ppm.controller;
 
 
 import com.ppm.entity.Activity;
+import com.ppm.entity.Advert;
 import com.ppm.mapper.ActivityMapper;
+import com.ppm.mapper.AdvertMapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -30,6 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
     @Autowired
     private ActivityMapper activityMapper;
+    @Autowired
+    private AdvertMapper advertMapper;
 
     @GetMapping("/login")
     public String logout(){
@@ -46,6 +52,8 @@ public class IndexController {
     public String activity(Integer id,Model model){
 
         Activity activity = activityMapper.selectByPrimaryKey(id);
+        List<Advert> advertList = advertMapper.findAvert(activity.getUserId());
+        model.addAttribute("advertList",advertList);
         model.addAttribute("id",id);
         model.addAttribute("activity",activity);
         return "act/index";

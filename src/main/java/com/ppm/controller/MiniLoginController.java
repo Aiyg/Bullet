@@ -149,18 +149,37 @@ public class MiniLoginController  {
             WxMember girl = girlList.get(new Random().nextInt(girlList.size()));
             if(boyList.size()>0 && girlList.size()>0) {
                 WxFriend wxFriend = new WxFriend();
-                wxFriend.setContent("嗨,你好");
+                wxFriend.setContent("缘分对对碰");
                 wxFriend.setCreateTime(new Date());
                 wxFriend.setWxMemberId(boy.getId());
                 wxFriend.setWxMemberFriendId(girl.getId());
                 wxFriendMapper.insert(wxFriend);
 
                 WxFriend wxFriend1 = new WxFriend();
-                wxFriend1.setContent("嗨,你好");
+                wxFriend1.setContent("缘分对对碰");
                 wxFriend1.setCreateTime(new Date());
                 wxFriend1.setWxMemberId(girl.getId());
                 wxFriend1.setWxMemberFriendId(boy.getId());
                 wxFriendMapper.insert(wxFriend1);
+
+                Friend friend = new Friend();
+                friend.setWxMemberId(boy.getId().toString());
+                friend.setWxMemberFriendId(girl.getId().toString());
+                friend = friendMapper.getFriend(friend);
+                //首次对话，添加好友信息
+                if(friend==null){
+                    friend = new Friend();
+                    friend.setWxMemberId(boy.getId().toString());
+                    friend.setWxMemberFriendId(girl.getId().toString());
+                    friend.setCreateTime(new Date());
+                    friendMapper.insert(friend);
+//------------------------互相添加为好友---------------------------//
+                    friend = new Friend();
+                    friend.setWxMemberId(girl.getId().toString());
+                    friend.setWxMemberFriendId(boy.getId().toString());
+                    friend.setCreateTime(new Date());
+                    friendMapper.insert(friend);
+                }
 
                 newList.add(boy);
                 newList.add(girl);
