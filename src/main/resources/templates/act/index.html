@@ -71,7 +71,7 @@
 			#bug .bush{
 				width: 100%;
 				height: 20%;
-				background: rgb(0,0,0,0.5);
+				background: rgb(0,0,0,0);
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -254,7 +254,8 @@
 					<!--<li><img src="/images/nav-ban2.jpg" /></li>
 					<li><img src="/images/nav-ban3.jpg" /></li>		-->
 				</ul>			
-			</div>		
+			</div>
+			<input type="hidden" th:value="${activity.id}" id="actId">
 			<div class="xizh">
 				<div class="nan">
 					<img src="/images/nan.jpg"/>
@@ -301,7 +302,69 @@
 		
 		
 		<script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+		<script src="/layui/layui.all.js"></script>
 		<script type="text/javascript">
+            var snow=$('<div class="danm"></div>').html('');
+            var $ = jQuery = layui.jquery;
+            var socket;
+            if(typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            }else{
+                console.log("您的浏览器支持WebSocket");
+                //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+                //等同于
+                //index = new WebSocket("wss://led.zxtrue.com/websocket/a1");
+                index = new WebSocket("ws://192.168.0.104/websocket/22"+$('#actId').val());
+                //打开事件
+                index.onopen = function() {
+                    console.log("Socket 已打开");
+                    //index.send("这是来自客户端的消息" + location.href + new Date());
+                };
+                //获得消息事件
+                index.onmessage = function(msg) {
+                    console.log(msg.data);
+                    var data = JSON.parse(msg.data)
+                    //发现消息进入    开始处理前端触发逻辑
+                    $(snow).html('<p class="danmp"><img src="'+data.headImg+'"/><span>'+data.content+'</span></p>');
+                    //sendbo();
+                    var iHeight=$(".da").height()-80;
+                    var red = parseInt(Math.random()*257).toString(16);
+                    var blue = parseInt(Math.random()*257).toString(16);
+                    var green= parseInt(Math.random()*257).toString(16);
+                    var starLeft=Math.random()*iHeight;
+                    var starOpacity=(0.9+Math.random()*1)*100;
+                    var endOpacity=(0+Math.random()*0.2)*100;
+                    snow.clone().appendTo($('.da')).css({
+                        position:'absolute',
+                        top:starLeft+'px',
+                        right:'30%',
+                        'font-size':'60px',
+                        opacity:starOpacity/100,
+                        filter:'alpha(opacity:'+starOpacity+')'
+                    }).animate({
+                        left:-800,
+                        opacity:endOpacity/100,
+                        filter:'alpha(opacity:'+endOpacity+')'
+                    },20000,function(){$(this).remove()})
+                    $(snow).html('');
+
+                };
+                //关闭事件
+                index.onclose = function() {
+                    console.log("Socket已关闭");
+                };
+                //发生了错误事件
+                index.onerror = function() {
+                    alert("Socket发生了错误");
+                    //此时可以尝试刷新页面
+                }
+                //离开页面时，关闭socket
+                //jquery1.8中已经被废弃，3.0中已经移除
+                // $(window).unload(function(){
+                //     socket.close();
+                //});
+            }
+
 			$(function(){
 //				左边
 				var iWidth=$('.bgmap').find('li').width();
@@ -344,22 +407,18 @@
 					$(".xizh").fadeIn();
 					$(".buxi").fadeIn();
 					$(".da").hide();
+                    $(".bush").css({'background':'rgb(0,0,0,0.5)'});
 				},function(){
 					$(".xizh").fadeOut();
 					$(".buxi").fadeOut();
 					$(".da").show();
-					
+                    $(".bush").css({'background':'rgb(0,0,0,0)'});
 				})
-				
 //				右上
 				var iWidth2=$('.bgmap2').find('li').width();
 				var len2=$('.bgmap2').find('li').length;
 				var iNow2=0;
-				
-				
-				//$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
-			
-			
+				$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
 				function autoPlay2(){
 					iNow2++;
 					if(iNow2==len2*2){
@@ -387,30 +446,30 @@
 				{name:'祝福语祝福语祝福语祝福语10'},			
 			]
 			
-			var snow=$('<div class="danm"></div>').html('');		
+
 
 			
-			setInterval(function(){
+			/*setInterval(function(){
 				var now=parseInt(Math.random()*data.length);				
 				$(snow).html('<p class="danmp"><img src="/images/rentou.png"/><span>'+data[now].name+'</span></p>');			
-			},2000)
+			},2000)*/
 			
 			
-			var iHeight=$(".da").height()-80;
-				setInterval(function(){
+
+				// setInterval(function(){
+				function sendbo(){
 					var red = parseInt(Math.random()*257).toString(16);
 					var blue = parseInt(Math.random()*257).toString(16);
 					var green= parseInt(Math.random()*257).toString(16);				
-					var color = '#'+red+blue+green;				
-					var starLeft=Math.random()*iHeight;				
+					var starLeft=Math.random()*iHeight;
 					var starOpacity=(0.9+Math.random()*1)*100;
 					var endOpacity=(0+Math.random()*0.2)*100;				
 					snow.clone().appendTo($('.da')).css({
 						position:'absolute',
 						top:starLeft+'px',
 						right:'-800px',
-						'font-size':'60px',						
-						color:color,
+						'font-size':'60px',
+						color:getRandomColor(),
 						opacity:starOpacity/100,
 						filter:'alpha(opacity:'+starOpacity+')'
 					}).animate({
@@ -418,10 +477,18 @@
 						opacity:endOpacity/100,
 						filter:'alpha(opacity:'+endOpacity+')'
 					},20000,function(){$(this).remove()})
-					
-				},3000)
-				
-				
+                    $(snow).html('');
+				}
+				// },3000)
+                function getRandomColor() {
+                    let rgb = []
+                    for (let i = 0; i < 3; ++i) {
+                        let color = Math.floor(Math.random() * 256).toString(16)
+                        color = color.length == 1 ? '0' + color : color
+                        rgb.push(color)
+                    }
+                    return '#' + rgb.join('')
+                }
 			})
 		</script>
 	</body>

@@ -323,7 +323,13 @@ public class MiniLoginController  {
                 friendMapper.insert(friend);
             }
 
-            WebSocketServer.sendInfo(message,cid);
+            Map<String,Object> param = new HashMap<>();
+            param.put("message",message);
+            param.put("headImg",sendMem.getHeadImg());
+            param.put("date","");
+            param.put("type",1);
+            param.put("nickName",sendMem.getNickName());
+            WebSocketServer.sendInfo(net.sf.json.JSONObject.fromObject(param).toString(),cid);
             result.put("code", 0);
             result.put("msg", "success");
         } catch (IOException e) {
