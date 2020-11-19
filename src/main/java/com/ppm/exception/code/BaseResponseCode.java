@@ -42,7 +42,9 @@ public enum BaseResponseCode implements ResponseCodeInterface {
     OPERATION_MENU_PERMISSION_URL_NOT_NULL(401015,"菜单权限的url不能为空"),
     OPERATION_MENU_PERMISSION_URL_PERMS_NULL(401016,"菜单权限的标识符不能为空"),
     OPERATION_MENU_PERMISSION_URL_METHOD_NULL(401017,"菜单权限的请求方式不能为空"),
-    USER_REUSE(401018,"用户名重复");
+    USER_REUSE(401018,"用户名重复"),
+    USER_EMPTY(401019,"暂无匹配对象"),
+    ;
     ;
 
     /**

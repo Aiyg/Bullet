@@ -20,7 +20,17 @@ public class WxFriend implements Serializable {
 
     private String nickName;
 
+    private String status="0";//0未读，1已读
+
     private String headImg;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     private static final long serialVersionUID = 1L;
 

@@ -140,14 +140,17 @@ public class MiniLoginController  {
     @ResponseBody
     public DataResult randomTwain(String activityId, HttpServletRequest request) throws IOException {
         try{
-            List<WxMember> newList = new ArrayList<>();
+            Map<String,Object> wxMem = new HashMap<>();
             List<WxMember> boyList = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"1");
-
+//            List<WxMember> boyList = new ArrayList<>();
+//            boyList.add(wxMemberMapper.findOne("oGI9P5YIctKFEz-LGfbv9hxznn1M"));
             List<WxMember> girlList = redisService.getList(Constant.ONLINE_WX_MEMBER+activityId+"2");
+//            List<WxMember> girlList = new ArrayList<>();
+//            girlList.add(wxMemberMapper.findOne("oGI9P5YtP2xkG17ZBkvT9n2g3CHI"));
 
-            WxMember boy = boyList.get(new Random().nextInt(boyList.size()));
-            WxMember girl = girlList.get(new Random().nextInt(girlList.size()));
             if(boyList.size()>0 && girlList.size()>0) {
+                WxMember boy = boyList.get(new Random().nextInt(boyList.size()));
+                WxMember girl = girlList.get(new Random().nextInt(girlList.size()));
                 WxFriend wxFriend = new WxFriend();
                 wxFriend.setContent("缘分对对碰");
                 wxFriend.setCreateTime(new Date());
@@ -180,11 +183,13 @@ public class MiniLoginController  {
                     friend.setCreateTime(new Date());
                     friendMapper.insert(friend);
                 }
-
-                newList.add(boy);
-                newList.add(girl);
+                wxMem.put("boy",boy);
+                wxMem.put("girl",girl);
+                return DataResult.success(wxMem);
+            }else{
+                return DataResult.getResult(BaseResponseCode.USER_EMPTY);
             }
-            return DataResult.success(newList);
+
         }catch (Exception e){
             e.printStackTrace();
             return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);

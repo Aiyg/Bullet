@@ -313,8 +313,8 @@
                 console.log("您的浏览器支持WebSocket");
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
                 //等同于
-                //index = new WebSocket("wss://led.zxtrue.com/websocket/a1");
-                index = new WebSocket("ws://192.168.0.104/websocket/22"+$('#actId').val());
+                index = new WebSocket("wss://led.zxtrue.com/websocket/22"+$('#actId').val());
+                //index = new WebSocket("ws://localhost/websocket/22"+$('#actId').val());
                 //打开事件
                 index.onopen = function() {
                     console.log("Socket 已打开");
@@ -323,7 +323,7 @@
                 //获得消息事件
                 index.onmessage = function(msg) {
                     console.log(msg.data);
-                    var data = JSON.parse(msg.data)
+                    var data = JSON.parse(msg.data);
                     //发现消息进入    开始处理前端触发逻辑
                     $(snow).html('<p class="danmp"><img src="'+data.headImg+'"/><span>'+data.content+'</span></p>');
                     //sendbo();
@@ -337,7 +337,7 @@
                     snow.clone().appendTo($('.da')).css({
                         position:'absolute',
                         top:starLeft+'px',
-                        right:'30%',
+                        right:'-200px',
                         'font-size':'60px',
                         opacity:starOpacity/100,
                         filter:'alpha(opacity:'+starOpacity+')'
@@ -404,10 +404,28 @@
 
 //				点图标
 				$(".buxc").toggle(function(){
-					$(".xizh").fadeIn();
-					$(".buxi").fadeIn();
-					$(".da").hide();
-                    $(".bush").css({'background':'rgb(0,0,0,0.5)'});
+					var actId = $('#actId').val();
+					$.ajax({
+						url: "/api/wx/randomTwain",
+						data: {"activityId":actId},
+						type: "POST",
+						dataType:"json",
+						success: function (res) {
+							console.log(res.data);
+							if(res.code != '0'){
+							    alert(res.msg);
+							}else {
+                                $('.nan').html('<img src="'+res.data.boy.headImg+'"/>' +
+									'<p style="font-size:30px;text-align:center;">'+res.data.boy.nickName+' </p>');
+                                $('.nv').html('<img src="'+res.data.girl.headImg+'"/>' +
+                                    '<p style="font-size:30px;text-align:center;">'+res.data.girl.nickName+' </p>');
+                                $(".xizh").fadeIn();
+                                $(".buxi").fadeIn();
+                                $(".da").hide();
+                                $(".bush").css({'background': 'rgb(0,0,0,0.5)'});
+                            }
+						}
+					});
 				},function(){
 					$(".xizh").fadeOut();
 					$(".buxi").fadeOut();

@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="wx_member_id" jdbcType="INTEGER" property="wxMemberId" />
     <result column="wx_member_friend_id" jdbcType="INTEGER" property="wxMemberFriendId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -61,9 +62,9 @@
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.WxFriend">
     insert into wx_friend (wx_member_id, wx_member_friend_id,
-      content, create_time)
+      content, create_time,status)
     values (#{wxMemberId,jdbcType=INTEGER}, #{wxMemberFriendId,jdbcType=INTEGER},
-      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{status})
   </insert>
 
 
