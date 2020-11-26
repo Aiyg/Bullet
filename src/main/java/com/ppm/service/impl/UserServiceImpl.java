@@ -212,8 +212,8 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        SysUser user = sysUserMapper.selectByPrimaryKey((String) request.getAttribute("userId"));
         List<SysUser> sysUsers = sysUserMapper.selectAll(vo);
+        SysUser user = sysUserMapper.selectByPrimaryKey((String) request.getAttribute("userId"));
         if(!sysUsers.isEmpty() && "admin".equals(user.getUsername())){
             for (SysUser sysUser:sysUsers){
                 SysDept sysDept = sysDeptMapper.selectByPrimaryKey(sysUser.getDeptId());
@@ -223,7 +223,6 @@ public class UserServiceImpl implements UserService {
             }
         }else{
             sysUsers = new ArrayList<>();
-            sysUsers.add(user);
         }
         return PageUtils.getPageVO(sysUsers);
     }
