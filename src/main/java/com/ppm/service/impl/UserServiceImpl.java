@@ -23,7 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -207,14 +210,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageVO<SysUser> pageInfo(UserPageReqVO vo) {
         PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        SysUser user = sysUserMapper.selectByPrimaryKey((String) request.getAttribute("userId"));
         List<SysUser> sysUsers = sysUserMapper.selectAll(vo);
-        if(!sysUsers.isEmpty()){
+        if(!sysUsers.isEmpty() && "admin".equals(user.getUsername())){
             for (SysUser sysUser:sysUsers){
                 SysDept sysDept = sysDeptMapper.selectByPrimaryKey(sysUser.getDeptId());
                 if (sysDept!=null){
                     sysUser.setDeptName(sysDept.getName());
                 }
             }
+        }else{
+            sysUsers = new ArrayList<>();
+            sysUsers.add(user);
         }
         return PageUtils.getPageVO(sysUsers);
     }

@@ -252,12 +252,12 @@ public class MiniLoginController  {
             record.setStatus("0");
             List<BulletSendRecord> list = bulletSendRecordMapper.findBulletList(record);
 
-            for(BulletSendRecord re:list){
+            /*for(BulletSendRecord re:list){
                 BulletSendRecord cord = new BulletSendRecord();
                 cord.setId(re.getId());
                 cord.setStatus("1");
                 bulletSendRecordMapper.updateByPrimaryKeySelective(cord);
-            }
+            }*/
             return DataResult.success(list);
         }catch (Exception e){
             e.printStackTrace();
