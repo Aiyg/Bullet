@@ -62,6 +62,7 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     charset: UTF-8
+    cache: false
     servlet:
       content-type: text/html
       cache: false

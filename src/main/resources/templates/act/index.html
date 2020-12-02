@@ -451,7 +451,7 @@
 				},2000)
 				
 //			弹幕
-			data=[
+			var data=[
 				{name:'祝福语祝福语祝福语祝福语1'},
 				{name:'祝福语祝福语祝福语祝福语2'},
 				{name:'祝福语祝福语祝福语祝福语3'},
@@ -463,38 +463,63 @@
 				{name:'祝福语祝福语祝福语祝福语9'},
 				{name:'祝福语祝福语祝福语祝福语10'},			
 			]
-			
+			var long;
+			getData();
+			function getData(){
+                var actId = $('#actId').val();
+                $.ajax({
+                    url: "/api/wx/bulletList",
+                    data: {"activityId":actId},
+					aync:false,
+                    type: "POST",
+                    dataType:"json",
+                    success: function (res) {
+                        console.log(res.data);
+                        if(res.code != '0'){
+                            alert(res.msg);
+                        }else {
+                            data = res.data;
+                            long = res.data.length;
+                            console.log('刷新时长：'+long+'秒');
+                        }
+                    }
+                });
+			}
 
+			setInterval(function(){//定时更新弹幕数据
+				getData();
+			},30000);
 
 			
-			/*setInterval(function(){
-				var now=parseInt(Math.random()*data.length);				
-				$(snow).html('<p class="danmp"><img src="/images/rentou.png"/><span>'+data[now].name+'</span></p>');			
-			},2000)*/
+			setInterval(function(){
+				var now=parseInt(Math.random()*data.length);
+				$(snow).html('<p class="danmp"><img src="'+data[now].headImg+'"/><span>'+data[now].content+'</span></p>');
+                sendbo();
+			},1000)
 			
 			
 
 				// setInterval(function(){
 				function sendbo(){
-					var red = parseInt(Math.random()*257).toString(16);
-					var blue = parseInt(Math.random()*257).toString(16);
-					var green= parseInt(Math.random()*257).toString(16);				
-					var starLeft=Math.random()*iHeight;
-					var starOpacity=(0.9+Math.random()*1)*100;
-					var endOpacity=(0+Math.random()*0.2)*100;				
-					snow.clone().appendTo($('.da')).css({
-						position:'absolute',
-						top:starLeft+'px',
-						right:'-800px',
-						'font-size':'60px',
-						color:getRandomColor(),
-						opacity:starOpacity/100,
-						filter:'alpha(opacity:'+starOpacity+')'
-					}).animate({
-						left:-800,
-						opacity:endOpacity/100,
-						filter:'alpha(opacity:'+endOpacity+')'
-					},20000,function(){$(this).remove()})
+                    var iHeight=$(".da").height()-80;
+                    var red = parseInt(Math.random()*257).toString(16);
+                    var blue = parseInt(Math.random()*257).toString(16);
+                    var green= parseInt(Math.random()*257).toString(16);
+                    var starLeft=Math.random()*iHeight;
+                    var starOpacity=(0.9+Math.random()*1)*100;
+                    var endOpacity=(0+Math.random()*0.2)*100;
+                    snow.clone().appendTo($('.da')).css({
+                        position:'absolute',
+                        top:starLeft+'px',
+                        right:'-200px',
+                        'font-size':'60px',
+                        opacity:starOpacity/100,
+                        filter:'alpha(opacity:'+starOpacity+')'
+                    }).animate({
+                        left:-800,
+                        opacity:endOpacity/100,
+                        filter:'alpha(opacity:'+endOpacity+')'
+                    },20000,function(){$(this).remove()})
                     $(snow).html('');
 				}
 				// },3000)
