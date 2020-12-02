@@ -1,8 +1,16 @@
 server:
   port: 8080
+  tomcat:
+      max-swallow-size: 100MB
+
 #数据库配置
 spring:
 #这个是关键，放开springboot对静态资源的拦截
+  servlet:
+     multipart:
+       enabled: true
+       max-file-size: 20MB
+       max-request-size: 20MB
   application:
     name: bullet
   datasource:
@@ -43,18 +51,18 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    lettuce:
-      pool:
-        max-active: 100
-        max-wait: PT10S
-        max-idle: 30
-        min-idle: 1
-        timeout: PT10S
+#    lettuce:
+#      pool:
+#        max-active: 100
+#        max-wait: PT10S
+#        max-idle: 30
+#        min-idle: 1
+#        timeout: PT10S
   #热部署工具
-  devtools:
-    restart:
-      poll-interval: 3000ms
-      quiet-period: 2999ms
+#  devtools:
+#    restart:
+#      poll-interval: 3000ms
+#      quiet-period: 2999ms
   #thymeleaf
   # 前缀 默认读取classpath:/templates/
   #无需配置
@@ -69,7 +77,7 @@ spring:
 #mybatis 配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-
+#文件上传大小限制
 #logging配置
 logging:
   level:
