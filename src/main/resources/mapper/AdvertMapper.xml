@@ -11,7 +11,7 @@
     <result column="is_deleted" jdbcType="VARCHAR" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_url, `type`, user_id, create_time, update_time, is_deleted
+    id, file_url, type, user_id, create_time, update_time, is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

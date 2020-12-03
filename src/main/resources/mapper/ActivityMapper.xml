@@ -18,13 +18,13 @@
     select 
     <include refid="Base_Column_List" />
     from activity
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_deleted=0
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from activity
-    where user_id = #{userId}
+    where user_id = #{userId} and is_deleted=0
     <if test="title!=null and title != ''">
       and title like concat('%',#{title},'%')
     </if>

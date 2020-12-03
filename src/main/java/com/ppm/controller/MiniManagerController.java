@@ -143,6 +143,13 @@ public class MiniManagerController {
         return DataResult.success();
     }
 
+    @RequestMapping("/activityDel")
+    public DataResult activityDel(Activity activity,HttpServletRequest request){
+        activity.setIsDeleted("1");
+        activityMapper.updateByPrimaryKeySelective(activity);
+        return DataResult.success();
+    }
+
     //-------------弹幕管理---------------------------------------
 
     //弹幕管理
