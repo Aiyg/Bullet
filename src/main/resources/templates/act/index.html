@@ -215,9 +215,12 @@
 				font-size: 0;
 				width: 100%;
 				height: 100%;				
-				position: absolute;
+				/*position: absolute;*/
+				position: relative;
 			}
 			#bug2 #yous .bgmap2 li{
+				position: absolute;
+				left:0;
 				display: inline-block;
 				width: 100%;
 				height: 100%;								
@@ -310,6 +313,15 @@
             if(typeof(WebSocket) == "undefined") {
                 console.log("您的浏览器不支持WebSocket");
             }else{
+                function getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+                function getRandomColor() {
+                    var c1 = getRandom(0, 255);
+                    var c2 = getRandom(0, 255);
+                    var c3 = getRandom(0, 255);
+                    return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
+                }
                 console.log("您的浏览器支持WebSocket");
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
                 //等同于
@@ -325,26 +337,25 @@
                     console.log(msg.data);
                     var data = JSON.parse(msg.data);
                     //发现消息进入    开始处理前端触发逻辑
-                    $(snow).html('<p class="danmp"><img src="'+data.headImg+'"/><span>'+data.content+'</span></p>');
+                    $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data.headImg+'"/><span style="color: #fff">'+data.content+'</span></p>');
                     //sendbo();
-                    var iHeight=$(".da").height()-80;
+                    var iHeight=$(".bgmap").height()-80;
                     var red = parseInt(Math.random()*257).toString(16);
                     var blue = parseInt(Math.random()*257).toString(16);
                     var green= parseInt(Math.random()*257).toString(16);
                     var starLeft=Math.random()*iHeight;
                     var starOpacity=(0.9+Math.random()*1)*100;
                     var endOpacity=(0+Math.random()*0.2)*100;
-                    snow.clone().appendTo($('.da')).css({
+                    snow.clone().appendTo($('.bgmap')).css({
                         position:'absolute',
                         top:starLeft+'px',
                         right:'-200px',
                         'font-size':'60px',
-                        opacity:starOpacity/100,
-                        filter:'alpha(opacity:'+starOpacity+')'
+                        opacity:1,
                     }).animate({
                         left:-800,
-                        opacity:endOpacity/100,
-                        filter:'alpha(opacity:'+endOpacity+')'
+                        opacity:1,
+                        //filter:'alpha(opacity:'+endOpacity+')'
                     },20000,function(){$(this).remove()})
                     $(snow).html('');
 
@@ -445,9 +456,21 @@
 					}
 					$('.bgmap2').stop().animate({left:-(iWidth2*iNow2)});					
 				}
+
+                function autoPlay3(){
+                    iNow2++;
+                    if(iNow2==len2*2){
+                        iNow2=len2;
+                        // $('.bgmap2').css({right:-iWidth2*(len2-1)})
+                        $('.bgmap2 li').eq(iNow2).css('opacity','1').siblings().css("opacity",'0')
+                    }
+                    // $('.bgmap2').stop().animate({left:-(iWidth2*iNow2)});
+                    $('.bgmap2 li').eq(iNow2).css('opacity','1').siblings().css("opacity",'0')
+
+                }
 				
 				timer2=setInterval(function(){
-					autoPlay2()
+                    autoPlay3()
 				},2000)
 				
 //			弹幕
@@ -493,44 +516,45 @@
 			
 			setInterval(function(){
 				var now=parseInt(Math.random()*data.length);
-				$(snow).html('<p class="danmp"><img src="'+data[now].headImg+'"/><span>'+data[now].content+'</span></p>');
+				$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data[now].headImg+'"/><span style="color: #fff">'+data[now].content+'</span></p>');
                 sendbo();
-			},1000)
-			
-			
+			},1500)
+
+
 
 				// setInterval(function(){
 				function sendbo(){
-                    var iHeight=$(".da").height()-80;
+                    var iHeight=$(".bgmap").height()-80;
                     var red = parseInt(Math.random()*257).toString(16);
                     var blue = parseInt(Math.random()*257).toString(16);
                     var green= parseInt(Math.random()*257).toString(16);
                     var starLeft=Math.random()*iHeight;
                     var starOpacity=(0.9+Math.random()*1)*100;
                     var endOpacity=(0+Math.random()*0.2)*100;
-                    snow.clone().appendTo($('.da')).css({
+                    snow.clone().appendTo($('.bgmap')).css({
                         position:'absolute',
                         top:starLeft+'px',
                         right:'-200px',
                         'font-size':'60px',
-                        opacity:starOpacity/100,
-                        filter:'alpha(opacity:'+starOpacity+')'
+                        opacity:1,
                     }).animate({
                         left:-800,
-                        opacity:endOpacity/100,
-                        filter:'alpha(opacity:'+endOpacity+')'
+                        opacity:1,
+                        // opacity:endOpacity/100,
+                        // filter:'alpha(opacity:'+endOpacity+')'
                     },20000,function(){$(this).remove()})
                     $(snow).html('');
 				}
 				// },3000)
+                // 返回我们要的颜色
+                function getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
                 function getRandomColor() {
-                    let rgb = []
-                    for (let i = 0; i < 3; ++i) {
-                        let color = Math.floor(Math.random() * 256).toString(16)
-                        color = color.length == 1 ? '0' + color : color
-                        rgb.push(color)
-                    }
-                    return '#' + rgb.join('')
+                    var c1 = getRandom(0, 255);
+                    var c2 = getRandom(0, 255);
+                    var c3 = getRandom(0, 255);
+                    return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
                 }
 			})
 		</script>

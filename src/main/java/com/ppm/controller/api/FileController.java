@@ -74,10 +74,12 @@ public class FileController {
             response.setDateHeader("Expires", 0L);
             os = response.getOutputStream();
             IOUtils.copy((InputStream)imgInputStream, os);
+            imgInputStream.close();
         }catch (Exception e){
             log.error(e.getStackTrace(),e);
         }finally {
             IOUtils.closeQuietly(os);
+            os.close();
         }
     }
 
