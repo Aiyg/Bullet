@@ -337,7 +337,11 @@
                     console.log(msg.data);
                     var data = JSON.parse(msg.data);
                     //发现消息进入    开始处理前端触发逻辑
-                    $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data.headImg+'"/><span style="color: #fff">'+data.content+'</span></p>');
+                    if (data.type==1) {
+                        $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data.headImg+'"/><span style="color: #fff">'+data.content+'</span></p>');
+                    }else{
+                        $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:linear-gradient(to right, #87f8f4,#f680f0);"><img style="border-radius:50%;" src="' + data.headImg + '"/><span style="color: #fff">' + data.content + '</span></p>');
+                    }
                     //sendbo();
                     var iHeight=$(".bgmap").height()-80;
                     var red = parseInt(Math.random()*257).toString(16);
@@ -514,10 +518,15 @@
 			},30000);
 
 			
-			setInterval(function(){
-				var now=parseInt(Math.random()*data.length);
-				$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data[now].headImg+'"/><span style="color: #fff">'+data[now].content+'</span></p>');
-                sendbo();
+			setInterval(function() {
+                var now = parseInt(Math.random() * data.length);
+                console.log(data.length);
+                if (data[now].type==1) {
+                	$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:' + getRandomColor() + '"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
+            	}else{
+                    $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:linear-gradient(to right, #87f8f4,#f680f0);"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
+				}
+				sendbo();
 			},1500)
 
 

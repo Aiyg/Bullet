@@ -33,7 +33,7 @@
     b.nick_name
     from bullet_send_record a left join
     wx_member b on a.wx_member_id = b.id
-    where a.activity_id  = #{activityId} and a.status = #{status}
+    where a.activity_id  = #{activityId} and a.status = #{status} order by a.create_time desc limit 0,20
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
