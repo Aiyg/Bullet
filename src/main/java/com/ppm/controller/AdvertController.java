@@ -52,7 +52,7 @@ public class AdvertController {
             return DataResult.success(advertList);
         }catch (Exception e){
             e.printStackTrace();
-            return DataResult.getResult(BaseResponseCode.ACCOUNT_ERROR);
+            return DataResult.getResult(BaseResponseCode.SYSTEM_BUSY);
         }
     }
 
