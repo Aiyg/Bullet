@@ -6,11 +6,12 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="is_deleted" jdbcType="VARCHAR" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, type, create_time, is_deleted
+    id, title, type, activity_id, create_time, is_deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -19,18 +20,28 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from bullet
-    where user_id=#{userId} and is_deleted=0
+  <select id="selectAll" resultType="com.ppm.entity.Bullet">
+    SELECT
+      a.id,
+      a.title,
+      b.title activityName,
+      a.type,
+      a.activity_id activityId,
+      a.create_time createTime
+    FROM
+      bullet a,
+      activity b
+    where a.activity_id = b.id  and a.is_deleted=0
+    <if test="title!=null">
+      and b.title like concat ('%',#{title},'%')
+    </if>
   </select>
 
   <select id="findBullet" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from bullet
-    where user_id=#{userId} and is_deleted=0
+    where activity_id=#{activityId} and is_deleted=0
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -38,10 +49,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppm.entity.Bullet">
-    insert into bullet (title, type,user_id,
+    insert into bullet (title, type,user_id,activity_id,
       create_time, is_deleted)
     values (#{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=VARCHAR})
+      #{activityId},#{createTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ppm.entity.Bullet">
     insert into bullet
@@ -88,6 +99,9 @@
       </if>
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},

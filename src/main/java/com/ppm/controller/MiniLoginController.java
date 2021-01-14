@@ -204,8 +204,8 @@ public class MiniLoginController  {
     @ResponseBody
     public DataResult bullet(Integer activityId, HttpServletRequest request) throws IOException {
         try{
-            Activity activity = activityMapper.selectByPrimaryKey(activityId);
-            List<Bullet> list = bulletMapper.findBullet(activity.getUserId());
+            //Activity activity = activityMapper.selectByPrimaryKey(activityId);
+            List<Bullet> list = bulletMapper.findBullet(activityId);
             return DataResult.success(list);
         }catch (Exception e){
             e.printStackTrace();

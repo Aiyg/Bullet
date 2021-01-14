@@ -23,4 +23,7 @@ public class BulletPageReqVO {
     @ApiModelProperty(value = "用户id")
     private String userId;
 
+    @ApiModelProperty(value = "活动名称")
+    private String title;
+
 }

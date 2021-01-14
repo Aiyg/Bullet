@@ -14,7 +14,7 @@ public interface BulletMapper {
 
     Bullet selectByPrimaryKey(Integer id);
 
-    List<Bullet> findBullet(String userId);
+    List<Bullet> findBullet(Integer activityId);
 
     List<Bullet> selectAll(BulletPageReqVO vo);
 

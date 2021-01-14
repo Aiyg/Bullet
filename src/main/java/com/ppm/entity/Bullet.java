@@ -12,11 +12,31 @@ public class Bullet implements Serializable {
 
     private String userId;
 
+    private Integer activityId;
+
     private Date createTime;
 
     private String isDeleted;
 
+    private String activityName;
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
+
     private static final long serialVersionUID = 1L;
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
 
     public String getUserId() {
         return userId;
