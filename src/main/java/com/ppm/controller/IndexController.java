@@ -9,7 +9,6 @@ import com.ppm.mapper.ActivityMapper;
 import com.ppm.mapper.AdvertMapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +55,7 @@ public class IndexController {
         model.addAttribute("advertList",advertList);
         model.addAttribute("id",id);
         model.addAttribute("activity",activity);
-        return "act/index";
+        return "index";
     }
     /**
      * 进入首页
