@@ -247,27 +247,27 @@
 			}
 			@keyframes rotate {
 				0% {
-					/* background-image: linear-gradient(45deg,#51f4fa 35%,#da7efc 60%); */
+					background-image: linear-gradient(45deg,#51f4fa 35%,#da7efc 60%);
 					font-size: 20px;
 					color:#000;
 				}
 				30%{
-					/* background-image: linear-gradient(45deg,#e151fa 35%,#7efcf1 60%); */
+					background-image: linear-gradient(45deg,#e151fa 35%,#7efcf1 60%);
 					font-size: 22px;
 					color:red;
 				}
 				50%{
-					/* background-image: linear-gradient(45deg,#d5fa51 35%,#d064f7 60%); */
+					background-image: linear-gradient(45deg,#d5fa51 35%,#d064f7 60%);
 					font-size: 26px;
 					color:#333;
 				}
 				70%{
-					/* background-image: linear-gradient(45deg,#fab151 35%,#7eb0fc 60%); */
+					background-image: linear-gradient(45deg,#fab151 35%,#7eb0fc 60%);
 					font-size: 26px;
 					color:red;
 				}
 				100% {
-					/* background-image: linear-gradient(45deg,#da7efc 35%,#51f4fa 60%); */
+					background-image: linear-gradient(45deg,#da7efc 35%,#51f4fa 60%);
 					font-size: 18px;
 					color:#333;
 				}
@@ -370,7 +370,7 @@
                     if (data.type==1) {
                         $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data.headImg+'"/><span style="color: #fff">'+data.content+'</span></p>');
                     }else{
-                        $(snow).html('<p class="danmp textAnimate" style="padding-top:3px;padding-bottom:3px;padding-left:1px;"><img style="border-radius:50%;" src="' + data.headImg + '"/><span style="color: #fff;">' + data.content + '</span></p>');
+                        $(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;" src="' + data.headImg + '"/><span style="">' + data.content + '</span></p>');
                     }
                     //sendbo();
                     var iHeight=$(".bgmap").height()-80;
@@ -554,7 +554,7 @@
                 if (data[now].type==1) {
                 	$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:' + getRandomColor() + '"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
             	}else{
-                    $(snow).html('<p class="danmp textAnimate" style="padding-top:3px;padding-bottom:3px;padding-left:1px;><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
+                    $(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="">' + data[now].content + '</span></p>');
 				}
 				sendbo();
 			},1500)

@@ -55,7 +55,7 @@ public class IndexController {
         model.addAttribute("advertList",advertList);
         model.addAttribute("id",id);
         model.addAttribute("activity",activity);
-        return "index";
+        return "act/index";
     }
     /**
      * 进入首页

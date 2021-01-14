@@ -73,8 +73,12 @@ public class FileController {
             response.setHeader("Cache-Control", "must-revalidate, no-transform");
             response.setDateHeader("Expires", 0L);
             os = response.getOutputStream();
-            IOUtils.copy((InputStream)imgInputStream, os);
-            imgInputStream.close();
+            if(imgInputStream==null){
+
+            }else {
+                IOUtils.copy((InputStream) imgInputStream, os);
+                imgInputStream.close();
+            }
         }catch (Exception e){
             log.error(e.getStackTrace(),e);
         }finally {
