@@ -35,6 +35,9 @@
     <if test="title!=null">
       and b.title like concat ('%',#{title},'%')
     </if>
+    <if test="activityId!=null">
+       and a.activity_id = #{activityId}
+    </if>
   </select>
 
   <select id="findBullet" resultMap="BaseResultMap">
