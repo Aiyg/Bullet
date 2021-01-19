@@ -14,11 +14,11 @@ spring:
   application:
     name: bullet
   datasource:
-      username: root
-      password: 112233
-      url: jdbc:mysql://101.200.84.235:3306/bullet_screen
-      type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://101.200.84.235:3306/bullet_screen
+      username: root
+      password: zxzp2021&#
       #连接池建立时创建的初始化连接数
       initialSize: 5
       #连接池中最大的活跃连接数
