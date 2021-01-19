@@ -1,601 +1,726 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
-	  xmlns:th="http://www.thymeleaf.org"
->
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<style type="text/css">
-			*{
-				margin: 0;
-				padding: 0;
-			}
-			ul,li{
-				list-style: none;
-			}
-			img{
-				vertical-align: top;
-			}
-			a{
-				text-decoration: none;
-			}
-			body,html{
-				overflow: hidden;
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
 
-			}
-			#bug{
-				position: fixed;
-				width: 69%;
-				height: 96%;
-				top: 2%;
-				left: 1%;
-				overflow: auto;
-			}
-			/*弹幕*/
-			.bg{
-				width: 69%;
-				height: 40%;
-				position: fixed;
-				top: 20%;
-				left: 0;
-				bottom: 20%;
-				z-index: 50;
-				object-fit:fill;				
-			}
-			
-			.danm{
-				height: 40px;
-				z-index: 200;
-				font-weight: bold;
-				font-family: '微软雅黑';				
-			}
-			.danm img{
-				width: 40px;
-				height: 40px;
-				vertical-align: top;
-				margin-right: 10px;
-			}
-			.danm p{
-				display: inline-block;
-				height: 40px;				
-				font-size: 24px;
-				line-height: 40px;
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul,
+		li {
+			list-style: none;
+		}
+
+		img {
+			vertical-align: top;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		body,
+		html {
+			overflow: hidden;
+
+		}
+
+		#bug {
+			position: fixed;
+			width: 69%;
+			height: 96%;
+			top: 2%;
+			left: 1%;
+			overflow: auto;
+		}
+
+		/*弹幕*/
+		.bg {
+			width: 69%;
+			height: 40%;
+			position: fixed;
+			top: 20%;
+			left: 0;
+			bottom: 20%;
+			z-index: 50;
+			object-fit: fill;
+		}
+
+		.danm {
+			height: 40px;
+			z-index: 200;
+			font-weight: bold;
+			font-family: '微软雅黑';
+		}
+
+		.danm img {
+			width: 40px;
+			height: 40px;
+			vertical-align: top;
+			margin-right: 10px;
+		}
+
+		.danm p {
+			display: inline-block;
+			height: 40px;
+			font-size: 24px;
+			line-height: 40px;
+			color: #000;
+			background: #fff;
+			border-radius: 20px;
+			padding-right: 12px;
+		}
+
+		/*左边*/
+
+		#bug .bush {
+			width: 100%;
+			height: 20%;
+			background: rgb(0, 0, 0, 0);
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 300;
+		}
+
+		#bug .bush img {
+			width: 80px;
+			height: 80px;
+			margin-left: 40px;
+			margin-top: 40px;
+		}
+
+		#bug .bush p {
+			display: inline-block;
+			height: 30px;
+			font-size: 40px;
+			color: red;
+			margin-top: 60px;
+			margin-left: 10px;
+			font-family: "微软雅黑";
+
+		}
+
+		#bug #carousel {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			overflow: hidden;
+		}
+
+		#bug #carousel .bgmap {
+			white-space: nowrap;
+			font-size: 0;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+		}
+
+		#bug #carousel .bgmap li {
+			display: inline-block;
+			width: 100%;
+			height: 100%;
+		}
+
+		#bug #carousel .bgmap li img {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		#bug .xizh {
+			width: 40%;
+			height: 20%;
+			position: relative;
+			top: 38%;
+			left: 30%;
+			z-index: 300;
+			display: none;
+		}
+
+		#bug .xizh .nan {
+			width: 30%;
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		#bug .xizh .nan img {
+			margin: auto;
+			width: 100%;
+			display: block;
+			margin-top: 30px;
+		}
+
+		#bug .bgzh {
+			width: 40%;
+			position: absolute;
+			left: 30%;
+			top: 0;
+		}
+
+		#bug .bgzh img {
+			width: 40%;
+			margin-left: 30%;
+			margin-top: 60px;
+		}
+
+		#bug .xizh .nv {
+			width: 30%;
+			height: 100%;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+
+		#bug .xizh .nv img {
+			margin: auto;
+			width: 100%;
+			display: block;
+			margin-top: 30px;
+		}
+
+		#bug .buxi {
+			width: 100%;
+			height: 20%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			z-index: 300;
+			background: rgb(0, 0, 0, 0.5);
+			display: none;
+		}
+
+		#bug .buxc {
+			width: 8%;
+			margin-left: 46%;
+			position: absolute;
+			bottom: 4%;
+			z-index: 301;
+		}
+
+		#bug .da {
+			width: 100%;
+			height: 60%;
+			position: absolute;
+			bottom: 20%;
+			left: 0;
+			z-index: 300;
+			overflow: hidden;
+		}
+
+
+		#bug2 {
+			position: fixed;
+			width: 29%;
+			height: 96%;
+			top: 2%;
+			right: 1%;
+		}
+
+		#bug2 #yous {
+			width: 100%;
+			height: 50%;
+			position: absolute;
+			right: 0;
+			top: 0;
+			overflow: hidden;
+		}
+
+		#bug2 #yous .bgmap2 {
+			white-space: nowrap;
+			font-size: 0;
+			width: 100%;
+			height: 100%;
+			/*position: absolute;*/
+			position: relative;
+		}
+
+		#bug2 #yous .bgmap2 li {
+			position: absolute;
+			left: 0;
+			display: inline-block;
+			width: 100%;
+			height: 100%;
+		}
+
+		#bug2 #yous .bgmap2 li img {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		#bug2 .erweima {
+			width: 100%;
+			height: 50%;
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			overflow: hidden;
+		}
+
+		#bug2 .erweima img {
+			width: 100%;
+			height: 100%;
+		}
+
+		.textAnimate {
+			min-width: 150px;
+			display: flex;
+			animation: bj 4s linear infinite 0s;
+		}
+
+		.spanAnimate {
+			display: block;
+			width: auto;
+			height: 100%;
+			float: right;
+			animation: rotate 5s linear infinite 0s;
+		}
+
+		.spanAnimate1 {
+			display: block;
+			width: auto;
+			height: 100%;
+			float: right;
+			animation: rotate2 4s linear infinite 0s;
+		}
+
+		.spanAnimate2 {
+			display: block;
+			width: auto;
+			height: 100%;
+			float: right;
+			animation: rotate3 1s linear infinite 0s;
+		}
+
+		@keyframes bj {
+			0% {
+				background-image: linear-gradient(45deg, #51f4fa 35%, #da7efc 60%);
 				color: #000;
-				background: #fff;
-				border-radius:20px;
-				padding-right: 12px;
 			}
-			
-			/*左边*/
-			
-			#bug .bush{
-				width: 100%;
-				height: 20%;
-				background: rgb(0,0,0,0);
-				position: absolute;
-				top: 0;
-				left: 0;
-				z-index: 300;
-			}
-			#bug .bush img{
-				width: 80px;
-				height: 80px;
-				margin-left: 40px;
-				margin-top: 40px;
-			}
-			#bug .bush p{
-				display: inline-block;
-				height: 30px;
-				font-size: 40px;
+
+			30% {
+				background-image: linear-gradient(45deg, #e151fa 35%, #7efcf1 60%);
 				color: red;
-				margin-top: 60px;
-				margin-left: 10px;
-				font-family: "微软雅黑";
-				
-			}
-			
-			#bug #carousel{
-				width: 100%;
-				height: 100%;
-				position: absolute;
-				overflow: hidden;
-			}
-			#bug #carousel .bgmap{
-				white-space: nowrap;
-				font-size: 0;
-				width: 100%;
-				height: 100%;				
-				position: absolute;
-			}
-			#bug #carousel .bgmap li{
-				display: inline-block;
-				width: 100%;
-				height: 100%;								
-			}
-			#bug #carousel .bgmap li img{
-				display: block;				
-				width: 100%;
-				height: 100%;
-			}
-			
-			#bug .xizh{
-				width: 40%;
-				height: 20%;
-				position: relative;
-				top: 38%;
-				left: 30%;
-				z-index: 300;
-				display: none;
-			}
-			#bug .xizh .nan{
-				width: 30%;
-				height: 100%;	
-				position: absolute;
-				left: 0;	
-				top: 0;
-			}
-			#bug .xizh .nan img{
-				margin: auto;
-				width: 100%;		
-				display: block;
-				margin-top: 30px;		
-			}
-			
-			#bug .bgzh{
-				width: 40%;
-				position: absolute;
-				left: 30%;	
-				top: 0;		
-			}
-			#bug .bgzh img{
-				width: 40%;
-				margin-left: 30%;
-				margin-top:60px;
 			}
 
-			#bug .xizh .nv{
-				width: 30%;
-				height: 100%;	
-				position: absolute;
-				right:0;	
-				top: 0;
+			50% {
+				background-image: linear-gradient(45deg, #d5fa51 35%, #d064f7 60%);
+				color: #333;
 			}
-			#bug .xizh .nv img{
-				margin: auto;
-				width: 100%;		
-				display: block;
-				margin-top: 30px;		
-			}
-			
-			#bug .buxi{
-				width: 100%;
-				height: 20%;
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				z-index: 300;
-				background: rgb(0,0,0,0.5);
-				display: none;
-			}
-			#bug .buxc{
-				width: 8%;
-				margin-left: 46%;
-				position: absolute;
-				bottom: 4%;
-				z-index: 301;
-			}
-			#bug .da{
-				width: 100%;
-				height: 60%;
-				position: absolute;
-				bottom: 20%;
-				left: 0;
-				z-index: 300;
-				overflow: hidden;
-			}
-			
-			
-			#bug2{
-				position: fixed;
-				width: 29%;
-				height: 96%;
-				top: 2%;
-				right: 1%;
-			}
-			#bug2 #yous{
-				width: 100%;
-				height: 50%;
-				position: absolute;
-				right: 0;
-				top: 0;
-				overflow: hidden;
-			}
-			#bug2 #yous .bgmap2{
-				white-space: nowrap;
-				font-size: 0;
-				width: 100%;
-				height: 100%;				
-				/*position: absolute;*/
-				position: relative;
-			}
-			#bug2 #yous .bgmap2 li{
-				position: absolute;
-				left:0;
-				display: inline-block;
-				width: 100%;
-				height: 100%;								
-			}
-			#bug2 #yous .bgmap2 li img{
-				display: block;				
-				width: 100%;
-				height: 100%;
-			}
-			#bug2 .erweima{
-				width: 100%;
-				height: 50%;
-				position: absolute;
-				right: 0;
-				bottom: 0;
-				overflow: hidden;
-			}
-			#bug2 .erweima img{
-				width: 100%;
-				height: 100%;
-			}
-			.textAnimate{
-				animation: rotate 5s linear infinite 0s; 
-			}
-			@keyframes rotate {
-				0% {
-					background-image: linear-gradient(45deg,#51f4fa 35%,#da7efc 60%);
-					font-size: 20px;
-					color:#000;
-				}
-				30%{
-					background-image: linear-gradient(45deg,#e151fa 35%,#7efcf1 60%);
-					font-size: 22px;
-					color:red;
-				}
-				50%{
-					background-image: linear-gradient(45deg,#d5fa51 35%,#d064f7 60%);
-					font-size: 26px;
-					color:#333;
-				}
-				70%{
-					background-image: linear-gradient(45deg,#fab151 35%,#7eb0fc 60%);
-					font-size: 26px;
-					color:red;
-				}
-				100% {
-					background-image: linear-gradient(45deg,#da7efc 35%,#51f4fa 60%);
-					font-size: 18px;
-					color:#333;
-				}
-			}
-		</style>
-		
-	</head>
-	<body>				
-		<div id="bug">
-			<div class="bush">
-				<img src="/images/anniu.jpg"/>
-				<p>[[${activity.title}]]</p>
-			</div>
-			<div id="carousel">
-				<ul class="bgmap">
-					<li><img id="bg" th:src="'/img/'+${activity.img}"/></li>
-					<!--<li><img src="/images/nav-ban2.jpg" /></li>
-					<li><img src="/images/nav-ban3.jpg" /></li>		-->
-				</ul>			
-			</div>
-			<input type="hidden" th:value="${activity.id}" id="actId">
-			<div class="xizh">
-				<div class="nan">
-					<img src="/images/nan.jpg"/>
-				</div>
 
-				<div class="bgzh">
-					<img src="/images/timg.jpg"/>
-				</div>
+			70% {
+				background-image: linear-gradient(45deg, #fab151 35%, #7eb0fc 60%);
+				color: red;
+			}
 
-				<div class="nv" >
-					<img src="/images/nv.jpg"/>
-				</div>
-			</div>
-			
-			<img class="buxc" src="/images/anniu.jpg"/>
-			<div class="da">
-				
-			</div>
-			<div class="buxi">
-				
-			</div>
-		</div>	
-		
-		
-		
-		<div id="bug2">
-			<div id="yous">
-				<ul class="bgmap2">
+			100% {
+				background-image: linear-gradient(45deg, #da7efc 35%, #51f4fa 60%);
+				color: #333;
+			}
+		}
 
-					<li th:each="advert : ${advertList}" th:id="${advert.id}">
-						<img th:src="'/img/'+ ${advert.fileUrl}">
-					</li>
+		@keyframes rotate {
+			0% {
+				font-size: 20px;
+			}
 
-					<!--<li><img src="/images/nav-ban2.jpg" /></li>
-					<li><img src="/images/nav-ban3.jpg" /></li>		-->
-				</ul>			
-			</div>
-			<div class="erweima">
-				<img th:src="'/api/code/getCode?activityId='+${activity.id}"/>
-			</div>
+			30% {
+				font-size: 22px;
+			}
+
+			50% {
+				font-size: 26px;
+			}
+
+			70% {
+				font-size: 26px;
+			}
+
+			100% {
+				font-size: 18px;
+			}
+		}
+
+		@keyframes rotate2 {
+			0% {
+				transform: rotateX(30deg);
+			}
+
+			30% {
+				transform: rotateX(100deg);
+			}
+
+			50% {
+				transform: rotateX(190deg);
+			}
+
+			70% {
+				transform: rotateX(220deg);
+			}
+
+			100% {
+				transform: rotateX(360deg);
+			}
+		}
+
+		@keyframes rotate3 {
+			0% {
+				opacity: 1;
+			}
+
+			25% {
+				opacity: 0;
+			}
+
+			50% {
+				opacity: 1;
+			}
+
+			75% {
+				opacity: 0;
+			}
+		}
+	</style>
+
+</head>
+
+<body>
+<div id="bug">
+	<div class="bush">
+		<img src="/images/anniu.jpg" />
+		<p>[[${activity.title}]]</p>
+	</div>
+	<div id="carousel">
+		<ul class="bgmap">
+			<li><img id="bg" th:src="'/img/'+${activity.img}" /></li>
+			<!--<li><img src="/images/nav-ban2.jpg" /></li>
+                <li><img src="/images/nav-ban3.jpg" /></li>		-->
+		</ul>
+	</div>
+	<input type="hidden" th:value="${activity.id}" id="actId">
+	<div class="xizh">
+		<div class="nan">
+			<img src="/images/nan.jpg" />
 		</div>
-		
-		<video class="bg" src="" autoplay="autoplay"></video>
-		
-		
-		<script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
-		<script src="/layui/layui.all.js"></script>
-		<script type="text/javascript">
-            var snow=$('<div class="danm"></div>').html('');
-            var $ = jQuery = layui.jquery;
-            var socket;
-            if(typeof(WebSocket) == "undefined") {
-                console.log("您的浏览器不支持WebSocket");
-            }else{
-                function getRandom(min, max) {
-                    return Math.floor(Math.random() * (max - min + 1)) + min;
-                }
-                function getRandomColor() {
-                    var c1 = getRandom(0, 255);
-                    var c2 = getRandom(0, 255);
-                    var c3 = getRandom(0, 255);
-                    return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
-                }
-                console.log("您的浏览器支持WebSocket");
-                //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-                //等同于
-                index = new WebSocket("wss://led.zxtrue.com/websocket/22"+$('#actId').val());
-                //index = new WebSocket("ws://localhost/websocket/22"+$('#actId').val());
-                //打开事件
-                index.onopen = function() {
-                    console.log("Socket 已打开");
-                    //index.send("这是来自客户端的消息" + location.href + new Date());
-                };
-                //获得消息事件
-                index.onmessage = function(msg) {
-                    console.log(msg.data);
-                    var data = JSON.parse(msg.data);
-                    //发现消息进入    开始处理前端触发逻辑
-                    if (data.type==1) {
-                        $(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:'+ getRandomColor() +'"><img style="border-radius:50%;" src="'+data.headImg+'"/><span style="color: #fff">'+data.content+'</span></p>');
-                    }else{
-                        $(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;" src="' + data.headImg + '"/><span style="">' + data.content + '</span></p>');
-                    }
-                    //sendbo();
-                    var iHeight=$(".bgmap").height()-80;
-                    var red = parseInt(Math.random()*257).toString(16);
-                    var blue = parseInt(Math.random()*257).toString(16);
-                    var green= parseInt(Math.random()*257).toString(16);
-                    var starLeft=Math.random()*iHeight;
-                    var starOpacity=(0.9+Math.random()*1)*100;
-                    var endOpacity=(0+Math.random()*0.2)*100;
-                    snow.clone().appendTo($('.bgmap')).css({
-                        position:'absolute',
-                        top:starLeft+'px',
-                        right:'-200px',
-                        'font-size':'60px',
-                        opacity:1,
-                    }).animate({
-                        left:-800,
-                        opacity:1,
-                        //filter:'alpha(opacity:'+endOpacity+')'
-                    },20000,function(){$(this).remove()})
-                    $(snow).html('');
 
-                };
-                //关闭事件
-                index.onclose = function() {
-                    console.log("Socket已关闭");
-                };
-                //发生了错误事件
-                index.onerror = function() {
-                    alert("Socket发生了错误");
-                    //此时可以尝试刷新页面
-                }
-                //离开页面时，关闭socket
-                //jquery1.8中已经被废弃，3.0中已经移除
-                // $(window).unload(function(){
-                //     socket.close();
-                //});
-            }
+		<div class="bgzh">
+			<img src="/images/timg.jpg" />
+		</div>
 
-			$(function(){
-//				左边
-				var iWidth=$('.bgmap').find('li').width();
-				var len=$('.bgmap').find('li').length;
-				var iNow=0;
-				
-				
-				$('.bgmap').children('li').clone().appendTo($('.bgmap'))
-			
-			
-				/*function autoPlay(){
-					iNow++;
-					if(iNow==len*2){
-						iNow=len
-						$('.bgmap').css({left:-iWidth*(len-1)})
-					}
-					$('.bgmap').stop().animate({left:-(iWidth*iNow)});					
-				}
-				
-				timer=setInterval(function(){
-					autoPlay()
-				},3000)	*/
+		<div class="nv">
+			<img src="/images/nv.jpg" />
+		</div>
+	</div>
 
-                /*$.ajax({
-                    type:"POST",
-                    async: false,
-                    url :"/api/wx/activity",
-                    data:{id:id},
-                }).done(function(data){
-                    if(data.success){
-                        alert(data.message);
-                    }else {
-                        alert(data.message);
-                    }
-                    history.go(0)
-                });*/
+	<img class="buxc" src="/images/anniu.jpg" />
+	<div class="da">
 
-//				点图标
-				$(".buxc").toggle(function(){
-					var actId = $('#actId').val();
-					$.ajax({
-						url: "/api/wx/randomTwain",
-						data: {"activityId":actId},
-						type: "POST",
-						dataType:"json",
-						success: function (res) {
-							console.log(res.data);
-							if(res.code != '0'){
-							    alert(res.msg);
-							}else {
-                                $('.nan').html('<img src="'+res.data.boy.headImg+'"/>' +
-									'<p style="font-size:30px;text-align:center;">'+res.data.boy.nickName+' </p>');
-                                $('.nv').html('<img src="'+res.data.girl.headImg+'"/>' +
-                                    '<p style="font-size:30px;text-align:center;">'+res.data.girl.nickName+' </p>');
-                                $(".xizh").fadeIn();
-                                $(".buxi").fadeIn();
-                                $(".da").hide();
-                                $(".bush").css({'background': 'rgb(0,0,0,0.5)'});
-                            }
-						}
-					});
-				},function(){
-					$(".xizh").fadeOut();
-					$(".buxi").fadeOut();
-					$(".da").show();
-                    $(".bush").css({'background':'rgb(0,0,0,0)'});
-				})
-//				右上
-				var iWidth2=$('.bgmap2').find('li').width();
-				var len2=$('.bgmap2').find('li').length;
-				var iNow2=0;
-				$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
-				function autoPlay2(){
-					iNow2++;
-					if(iNow2==len2*2){
-						iNow2=len2
-						$('.bgmap2').css({left:-iWidth2*(len2-1)})
-					}
-					$('.bgmap2').stop().animate({left:-(iWidth2*iNow2)});					
-				}
+	</div>
+	<div class="buxi">
 
-                function autoPlay3(){
-                    iNow2++;
-                    if(iNow2==len2*2){
-                        iNow2=len2;
-                        // $('.bgmap2').css({right:-iWidth2*(len2-1)})
-                        $('.bgmap2 li').eq(iNow2).css('opacity','1').siblings().css("opacity",'0')
-                    }
-                    // $('.bgmap2').stop().animate({left:-(iWidth2*iNow2)});
-                    $('.bgmap2 li').eq(iNow2).css('opacity','1').siblings().css("opacity",'0')
+	</div>
+</div>
 
-                }
-				
-				timer2=setInterval(function(){
-                    autoPlay3()
-				},3500)
-				
-//			弹幕
-			var data=[
-				{name:'祝福语祝福语祝福语祝福语1'},
-				{name:'祝福语祝福语祝福语祝福语2'},
-				{name:'祝福语祝福语祝福语祝福语3'},
-				{name:'祝福语祝福语祝福语祝福语4'},
-				{name:'祝福语祝福语祝福语祝福语5'},
-				{name:'祝福语祝福语祝福语祝福语6'},
-				{name:'祝福语祝福语祝福语祝福语7'},
-				{name:'祝福语祝福语祝福语祝福语8'},
-				{name:'祝福语祝福语祝福语祝福语9'},
-				{name:'祝福语祝福语祝福语祝福语10'},			
-			]
-			var long;
-			getData();
-			function getData(){
-                var actId = $('#actId').val();
-                $.ajax({
-                    url: "/api/wx/bulletList",
-                    data: {"activityId":actId},
-					aync:false,
-                    type: "POST",
-                    dataType:"json",
-                    success: function (res) {
-                        console.log(res.data);
-                        if(res.code != '0'){
-                            alert(res.msg);
-                        }else {
-                            data = res.data;
-                            long = res.data.length;
-                            console.log('刷新时长：'+long+'秒');
-                        }
-                    }
-                });
+
+
+<div id="bug2">
+	<div id="yous">
+		<ul class="bgmap2">
+
+			<li th:each="advert : ${advertList}" th:id="${advert.id}">
+				<img th:src="'/img/'+ ${advert.fileUrl}">
+			</li>
+
+			<!--<li><img src="/images/nav-ban2.jpg" /></li>
+                <li><img src="/images/nav-ban3.jpg" /></li>		-->
+		</ul>
+	</div>
+	<div class="erweima">
+		<img th:src="'/api/code/getCode?activityId='+${activity.id}" />
+	</div>
+</div>
+
+<video class="bg" src="" autoplay="autoplay"></video>
+
+
+<script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://led.zxtrue.com/layui/layui.all.js"></script>
+<script type="text/javascript">
+	var snow = $('<div class="danm"></div>').html('');
+	var $ = jQuery = layui.jquery;
+	var socket;
+	if (typeof (WebSocket) == "undefined") {
+		console.log("您的浏览器不支持WebSocket");
+	} else {
+		function getRandom(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		function getRandomColor() {
+			var c1 = getRandom(0, 255);
+			var c2 = getRandom(0, 255);
+			var c3 = getRandom(0, 255);
+			return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
+		}
+		console.log("您的浏览器支持WebSocket");
+		//实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+		//等同于
+		index = new WebSocket("wss://led.zxtrue.com/websocket/22" + $('#actId').val());
+		//index = new WebSocket("ws://localhost/websocket/22"+$('#actId').val());
+		//打开事件
+		index.onopen = function () {
+			console.log("Socket 已打开");
+			//index.send("这是来自客户端的消息" + location.href + new Date());
+		};
+		//获得消息事件
+		var className = ["spanAnimate", "spanAnimate", "spanAnimate1","spanAnimate2", "spanAnimate2", "spanAnimate2","spanAnimate", "spanAnimate1", "spanAnimate2","spanAnimate1"];
+		index.onmessage = function (msg) {
+			var num = Math.floor(Math.random()*10);
+			var classN= className[num];
+			var now = parseInt(Math.random() * data.length);
+			var data = JSON.parse(msg.data);
+			//发现消息进入    开始处理前端触发逻辑
+			if (data.type == 1) {
+				$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:' + getRandomColor() + '"><img style="border-radius:50%;" src="' + data.headImg + '"/><span style="color: #fff">' + data.content + '</span></p>');
+			} else {
+				$(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;float:left;" src="' + data.headImg + '"/><span class="'+classN+'"'+'>' + data.content + '</span></p>');
 			}
+			//sendbo();
+			textRandom();
+			var iHeight = $(".bgmap").height() - 80;
+			var red = parseInt(Math.random() * 257).toString(16);
+			var blue = parseInt(Math.random() * 257).toString(16);
+			var green = parseInt(Math.random() * 257).toString(16);
+			var starLeft = Math.random() * iHeight;
+			var starOpacity = (0.9 + Math.random() * 1) * 100;
+			var endOpacity = (0 + Math.random() * 0.2) * 100;
+			snow.clone().appendTo($('.bgmap')).css({
+				position: 'absolute',
+				top: starLeft + 'px',
+				right: '-200px',
+				'font-size': '60px',
+				opacity: 1,
+			}).animate({
+				left: -800,
+				opacity: 1,
+				//filter:'alpha(opacity:'+endOpacity+')'
+			}, 20000, function () { $(this).remove() })
+			$(snow).html('');
 
-			setInterval(function(){//定时更新弹幕数据
-				getData();
-			},30000);
+		};
+		//关闭事件
+		index.onclose = function () {
+			console.log("Socket已关闭");
+		};
+		//发生了错误事件
+		index.onerror = function () {
+			alert("Socket发生了错误");
+			//此时可以尝试刷新页面
+		}
+		//离开页面时，关闭socket
+		//jquery1.8中已经被废弃，3.0中已经移除
+		// $(window).unload(function(){
+		//     socket.close();
+		//});
+	}
 
-			
-			setInterval(function() {
-                var now = parseInt(Math.random() * data.length);
-                console.log(data.length);
-                if (data[now].type==1) {
-                	$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:' + getRandomColor() + '"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
-            	}else{
-                    $(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="">' + data[now].content + '</span></p>');
-				}
-				sendbo();
-			},1500)
+	$(function () {
+		//				左边
+		var iWidth = $('.bgmap').find('li').width();
+		var len = $('.bgmap').find('li').length;
+		var iNow = 0;
 
 
+		$('.bgmap').children('li').clone().appendTo($('.bgmap'))
 
-				// setInterval(function(){
-				function sendbo(){
-                    var iHeight=$(".bgmap").height()-80;
-                    var red = parseInt(Math.random()*257).toString(16);
-                    var blue = parseInt(Math.random()*257).toString(16);
-                    var green= parseInt(Math.random()*257).toString(16);
-                    var starLeft=Math.random()*iHeight;
-                    var starOpacity=(0.9+Math.random()*1)*100;
-                    var endOpacity=(0+Math.random()*0.2)*100;
-                    snow.clone().appendTo($('.bgmap')).css({
-                        position:'absolute',
-                        top:starLeft+'px',
-                        right:'-200px',
-                        'font-size':'60px',
-                        opacity:1,
-                    }).animate({
-                        left:-800,
-                        opacity:1,
-                        // opacity:endOpacity/100,
-                        // filter:'alpha(opacity:'+endOpacity+')'
-                    },20000,function(){$(this).remove()})
-                    $(snow).html('');
-				}
-				// },3000)
-                // 返回我们要的颜色
-                function getRandom(min, max) {
-                    return Math.floor(Math.random() * (max - min + 1)) + min;
+
+		/*function autoPlay(){
+            iNow++;
+            if(iNow==len*2){
+                iNow=len
+                $('.bgmap').css({left:-iWidth*(len-1)})
+            }
+            $('.bgmap').stop().animate({left:-(iWidth*iNow)});
+        }
+
+        timer=setInterval(function(){
+            autoPlay()
+        },3000)	*/
+
+		/*$.ajax({
+                type:"POST",
+                async: false,
+                url :"/api/wx/activity",
+                data:{id:id},
+        }).done(function(data){
+                if(data.success){
+                        alert(data.message);
+                }else {
+                        alert(data.message);
                 }
-                function getRandomColor() {
-                    var c1 = getRandom(0, 255);
-                    var c2 = getRandom(0, 255);
-                    var c3 = getRandom(0, 255);
-                    return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
-                }
-			})
-		</script>
-	</body>
+                history.go(0)
+        });*/
+
+		//				点图标
+		$(".buxc").toggle(function () {
+			var actId = $('#actId').val();
+			$.ajax({
+				url: "/api/wx/randomTwain",
+				data: { "activityId": actId },
+				type: "POST",
+				dataType: "json",
+				success: function (res) {
+					console.log(res.data);
+					if (res.code != '0') {
+						alert(res.msg);
+					} else {
+						$('.nan').html('<img src="' + res.data.boy.headImg + '"/>' +
+								'<p style="font-size:30px;text-align:center;">' + res.data.boy.nickName + ' </p>');
+						$('.nv').html('<img src="' + res.data.girl.headImg + '"/>' +
+								'<p style="font-size:30px;text-align:center;">' + res.data.girl.nickName + ' </p>');
+						$(".xizh").fadeIn();
+						$(".buxi").fadeIn();
+						$(".da").hide();
+						$(".bush").css({ 'background': 'rgb(0,0,0,0.5)' });
+					}
+				}
+			});
+		}, function () {
+			$(".xizh").fadeOut();
+			$(".buxi").fadeOut();
+			$(".da").show();
+			$(".bush").css({ 'background': 'rgb(0,0,0,0)' });
+		})
+		//				右上
+		var iWidth2 = $('.bgmap2').find('li').width();
+		var len2 = $('.bgmap2').find('li').length;
+		var iNow2 = 0;
+		$('.bgmap2').children('li').clone().appendTo($('.bgmap2'))
+		function autoPlay2() {
+			iNow2++;
+			if (iNow2 == len2 * 2) {
+				iNow2 = len2
+				$('.bgmap2').css({ left: -iWidth2 * (len2 - 1) })
+			}
+			$('.bgmap2').stop().animate({ left: -(iWidth2 * iNow2) });
+		}
+
+		function autoPlay3() {
+			iNow2++;
+			if (iNow2 == len2 * 2) {
+				iNow2 = len2;
+				// $('.bgmap2').css({right:-iWidth2*(len2-1)})
+				$('.bgmap2 li').eq(iNow2).css('opacity', '1').siblings().css("opacity", '0')
+			}
+			// $('.bgmap2').stop().animate({left:-(iWidth2*iNow2)});
+			$('.bgmap2 li').eq(iNow2).css('opacity', '1').siblings().css("opacity", '0')
+
+		}
+
+		timer2 = setInterval(function () {
+			autoPlay3()
+		}, 3500)
+
+		//			弹幕
+		var data = [
+			{ name: '祝福语祝福语祝福语祝福语1' },
+			{ name: '祝福语祝福语祝福语祝福语2' },
+			{ name: '祝福语祝福语祝福语祝福语3' },
+			{ name: '祝福语祝福语祝福语祝福语4' },
+			{ name: '祝福语祝福语祝福语祝福语5' },
+			{ name: '祝福语祝福语祝福语祝福语6' },
+			{ name: '祝福语祝福语祝福语祝福语7' },
+			{ name: '祝福语祝福语祝福语祝福语8' },
+			{ name: '祝福语祝福语祝福语祝福语9' },
+			{ name: '祝福语祝福语祝福语祝福语10' },
+		]
+		var long;
+		getData();
+		function getData() {
+			var actId = $('#actId').val();
+			$.ajax({
+				url: "/api/wx/bulletList",
+				data: { "activityId": actId },
+				aync: false,
+				type: "POST",
+				dataType: "json",
+				success: function (res) {
+					console.log(res.data);
+					if (res.code != '0') {
+						alert(res.msg);
+					} else {
+						data = res.data;
+						long = res.data.length;
+						console.log('刷新时长：' + long + '秒');
+					}
+				}
+			});
+		}
+
+		setInterval(function () {//定时更新弹幕数据
+			getData();
+		}, 30000);
+
+
+
+		setInterval(function () {
+			var num = Math.floor(Math.random()*10);
+			var classN= className[num];
+			var now = parseInt(Math.random() * data.length);
+			if (data[now].type == 1) {
+				$(snow).html('<p class="danmp" style="padding-top:1px;padding-bottom:1px;padding-left:1px;background:' + getRandomColor() + '"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span style="color: #fff">' + data[now].content + '</span></p>');
+			} else {
+				$(snow).html('<p class="danmp textAnimate" style="padding-top:2px;padding-bottom:2px;padding-left:1px;"><img style="border-radius:50%;" src="' + data[now].headImg + '"/><span class="'+classN+'"'+'>' + data[now].content + '</span></p>');
+			}
+			sendbo();
+		}, 1500)
+
+
+
+		// setInterval(function(){
+		function sendbo() {
+			var iHeight = $(".bgmap").height() - 80;
+			var red = parseInt(Math.random() * 257).toString(16);
+			var blue = parseInt(Math.random() * 257).toString(16);
+			var green = parseInt(Math.random() * 257).toString(16);
+			var starLeft = Math.random() * iHeight;
+			var starOpacity = (0.9 + Math.random() * 1) * 100;
+			var endOpacity = (0 + Math.random() * 0.2) * 100;
+			snow.clone().appendTo($('.bgmap')).css({
+				position: 'absolute',
+				top: starLeft + 'px',
+				right: '-200px',
+				'font-size': '60px',
+				opacity: 1,
+			}).animate({
+				left: -800,
+				opacity: 1,
+				// opacity:endOpacity/100,
+				// filter:'alpha(opacity:'+endOpacity+')'
+			}, 20000, function () { $(this).remove() })
+			$(snow).html('');
+		}
+		// },3000)
+		// 返回我们要的颜色
+		function getRandom(min, max) {
+
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		function getRandomColor() {
+			var c1 = getRandom(0, 255);
+			var c2 = getRandom(0, 255);
+			var c3 = getRandom(0, 255);
+			return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
+		}
+	})
+
+</script>
+</body>
+
 </html>
