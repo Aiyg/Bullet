@@ -34,7 +34,11 @@
     select
     <include refid="Base_Column_List" />
     from advert
-    where user_id = #{userId} and is_deleted=0 order by type desc,create_time desc
+    where is_deleted=0
+    <if test="userId!=null and userId!=''">
+      and user_id = #{userId}
+    </if>
+    order by create_time desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from advert
