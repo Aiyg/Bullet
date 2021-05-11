@@ -13,6 +13,8 @@ import java.security.spec.AlgorithmParameterSpec;
 
 public class WeiXinUtil {
 
+    final static private String appid = "wxa3234f15461aface";
+    final static private String secret = "243d9b2852cda6e3a812846a7cae249f";
     // 获取token
     public static String getAccessToken(String appid,String serect) {
         String access_token = "";
@@ -47,6 +49,21 @@ public class WeiXinUtil {
             e.printStackTrace();
         }
         return access_token;
+    }
+
+    public static boolean validContent(String content){
+        String token=getAccessToken(appid,secret);
+        String url="https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+token;
+        JSONObject json  = new JSONObject();
+        json.put("content",content);
+        JSONObject jsonObject = HttpTools.httpsRequest(url, "POST", json.toString());
+        System.out.println(jsonObject);
+        if("ok".equals(String.valueOf(jsonObject.get("errmsg")))){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     // 获取ticket

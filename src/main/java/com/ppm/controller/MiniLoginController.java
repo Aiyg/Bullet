@@ -6,10 +6,7 @@ import com.ppm.entity.*;
 import com.ppm.exception.code.BaseResponseCode;
 import com.ppm.mapper.*;
 import com.ppm.service.RedisService;
-import com.ppm.utils.DataResult;
-import com.ppm.utils.HttpTools;
-import com.ppm.utils.StringTools;
-import com.ppm.utils.WebSocketServer;
+import com.ppm.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -301,6 +298,12 @@ public class MiniLoginController  {
     @RequestMapping("/socket/push")
     public Map pushToWeb(String cid, String oid, String message) {
         Map result = new HashMap();
+        Boolean boo = WeiXinUtil.validContent(message);
+        if(!boo){
+            result.put("code", 55555);
+            result.put("msg", "文字不合规");
+            return result;
+        }
         try {
             WxMember sendMem = wxMemberMapper.findOne(oid);
             WxFriend wxFriend = new WxFriend();
